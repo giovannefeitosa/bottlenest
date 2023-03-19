@@ -23,10 +23,12 @@ class NestApplicationContext:
     def init(self):
         self.app = Flask(self.module.name)
         self.container.set('app', self.app)
+        self.container.set('module', self.module)
         self.container.set('NestApplicationContext', self)
         self.container.set('NestContainer', self.container)
         self.container.set('NestLogger', self.logger)
         self.setupErrorHandlers()
+        self.module.initProviders(module=self.module, container=self.container)
         self.module.initControllers(self.container)
 
     def setupErrorHandlers(self):

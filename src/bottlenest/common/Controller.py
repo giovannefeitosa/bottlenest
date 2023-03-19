@@ -11,25 +11,25 @@ def Controller():
 
 
 class NestController:
-    lastController = None
-
     def __init__(self, controllerClass):
         self.name = controllerClass.__name__
         self.controllerClass = controllerClass
-        self.controller = controllerClass
+        # print("-----------------xxx> ", self.controller())
 
     def initController(self, context):
+        self.controller = self.controllerClass(context)
         routeNames = [name for name in dir(self.controller) if type(
             getattr(self.controller, name)).__name__ == 'NestRoute']
         for routeName in routeNames:
             route = getattr(self.controller, routeName)
-            route.initRoute(context)
+            route.initRoute(self.controller, context)
 
 
 def Get(path):
     print(f"get defined {path}")
 
     def wrapper(func):
+        print("--------------------> ", func)
         return NestRoute(path=path, method='GET', callback=func)
         # print(f"get wrapper {path}")
         # def wrapped(*args, **kwargs):
@@ -56,20 +56,20 @@ class NestRoute:
         self.path = self.nestjsToFlaskPath(path)
         self.method = method
 
-    def initRoute(self, context):
+    def initRoute(self, controller, context):
         print(f"init route {self.path}")
         app = context.get('app')
         app.add_url_rule(
             self.path,
             methods=[self.method],
-            view_func=NestRoute.callbackWrapper(self.callback),
+            view_func=self.callbackWrapper(controller),
         )
 
-    @staticmethod
-    def callbackWrapper(callback):
-        @wraps(callback)
+    def callbackWrapper(self, controller):
+        @wraps(self.callback)
         def wrapped(*args, **kwargs):
-            return callback(NestRequest(request))
+            return self.callback(controller, NestRequest(request))
+            # return self.callback(context)
         return wrapped
 
     # Flask routing is different than NestJS routing
@@ -91,6 +91,9 @@ class NestRequest:
         self.query = {}
         self.body = request.get_json(silent=True, force=True)
         self.headers = {}
+
+        if self.body is None:
+            self.body = {}
 
 
 class NestRequestParams(object):
