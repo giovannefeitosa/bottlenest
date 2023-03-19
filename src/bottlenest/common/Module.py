@@ -9,7 +9,7 @@ def Module(controllers=[], imports=[], providers=[]):
     return wrapper
 
 
-class NestModule:
+class NestModule(object):
     def __init__(self, moduleClass, imports, controllers, providers):
         self.name = moduleClass.__name__
         self.imports = imports
@@ -32,3 +32,7 @@ class NestModule:
             imp.initControllers(imp, container)
         for cont in self.controllers:
             cont.initController(module, container)
+
+    # proxy static methods
+    def __getattr__(self, name):
+        return getattr(self.module, name)
