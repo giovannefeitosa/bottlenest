@@ -1,6 +1,6 @@
 from bottlenest.core.NestContainer import NestContainer
 from bottlenest.core.NestLogger import NestLogger
-from bottlenest.http.HttpTransport import HttpTransport
+from bottlenest.transports.http.HttpTransport import HttpTransport
 
 
 class NestApplicationContext:
