@@ -5,4 +5,34 @@
     "**/*.pyc": true,
     "**/*.egg-info": true,
   },
+  // activeBackground: #1f2f44
+  // activeForeground: #fff
+  // inactiveBackground: #192938
+  // inactiveForeground: #677786
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#1f2f44",
+    "activityBarBadge.background": "#1f2f44",
+    "activityBarBadge.foreground": "#fff",
+    "titleBar.activeBackground": "#1f2f44",
+    "titleBar.activeForeground": "#fff",
+    "titleBar.inactiveBackground": "#192938",
+    "titleBar.inactiveForeground": "#677786",
+    "statusBar.background": "#1f2f44",
+    "statusBar.foreground": "#fff",
+    "statusBar.debuggingBackground": "#1f2f44",
+    "statusBar.debuggingForeground": "#fff",
+    "statusBar.noFolderBackground": "#1f2f44",
+    "statusBar.noFolderForeground": "#fff",
+    "statusBarItem.hoverBackground": "#1f2f44",
+    "statusBarItem.prominentBackground": "#1f2f44",
+    "statusBarItem.prominentHoverBackground": "#1f2f44",
+    "tab.activeBackground": "#1f2f44",
+    "tab.activeForeground": "#fff",
+    "tab.inactiveBackground": "#192938",
+    "tab.inactiveForeground": "#677786",
+    "tab.unfocusedActiveBackground": "#1f2f44",
+    "tab.unfocusedActiveForeground": "#fff",
+    "tab.unfocusedInactiveBackground": "#192938",
+    "tab.unfocusedInactiveForeground": "#677786",
+  },
 }

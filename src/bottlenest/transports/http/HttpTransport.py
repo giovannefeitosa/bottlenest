@@ -1,8 +1,6 @@
 from flask import Flask
 from bottlenest.transports.http.errors import HttpError
 import traceback
-# TODO: delete NestErrorHandler
-# from bottlenest.core.NestErrorHandler import NestErrorHandler
 
 
 class HttpTransport:

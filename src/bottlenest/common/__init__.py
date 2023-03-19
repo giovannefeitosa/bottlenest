@@ -1,6 +1,6 @@
-from bottlenest.common.Module import *
 from bottlenest.common.Injectable import *
 
-# http
-from bottlenest.transports.http import *
+# auto import from http
+from bottlenest.transports.http.decorators import *
 from bottlenest.transports.http.errors import *
+from bottlenest.transports.http import *

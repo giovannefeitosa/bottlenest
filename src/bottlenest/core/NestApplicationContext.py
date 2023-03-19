@@ -25,9 +25,7 @@ class NestApplicationContext:
         self.container.set('transport', self.transport)
         self.container.set('NestApplicationContext', self)
         self.container.set('NestContainer', self.container)
-        self.module.initProviders(module=self.module, container=self.container)
-        self.module.initControllers(
-            module=self.module, container=self.container)
+        self.module.init(self.container)
 
     def setupLogger(self):
         logger = NestLogger()

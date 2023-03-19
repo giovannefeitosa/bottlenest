@@ -10,4 +10,6 @@ class AppController:
 
     @Get('/')
     def getHello(self, req):
-        return f"Hello from {self.configService.get('THE_BEST_PYTHON_FRAMEWORK')}!"
+        return {
+            'fromEnv': self.configService.get('THE_BEST_PYTHON_FRAMEWORK')
+        }
