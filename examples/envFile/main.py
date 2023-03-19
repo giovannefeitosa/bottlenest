@@ -1,4 +1,4 @@
-from bottlenest import *
+from bottlenest import NestFactory, Transport
 from examples.envFile.app.AppModule import AppModule
 
 port = 4000

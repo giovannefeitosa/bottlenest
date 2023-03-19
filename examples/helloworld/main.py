@@ -1,4 +1,4 @@
-from bottlenest import *
+from bottlenest import NestFactory, Transport
 from examples.helloworld.app.module import AppModule
 
 port = 4000
