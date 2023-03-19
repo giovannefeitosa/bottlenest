@@ -1,52 +1,54 @@
 from bottlenest.core.NestContainer import NestContainer
 from bottlenest.core.NestLogger import NestLogger
-from bottlenest.core.NestErrorHandler import NestErrorHandler
-from flask import Flask
+from bottlenest.http.HttpTransport import HttpTransport
 
 
 class NestApplicationContext:
-    def __init__(self, module, options):
+    def __init__(self, module, transport):
         self.module = module
-        self.options = options
-        self.container = NestContainer()
-        self.logger = NestLogger()
+        self.logger = self.setupLogger()
+        self.container = self.setupContainer()
         self.logger.setContext(self)
+        self.transport = self.setupTransport(transport)
         # self.logger.log('NestApplicationContext initialized')
         # self.logger.log('NestApplicationContext module: ' +
         #                 str(self.module.name))
-        self.logger.log('NestApplicationContext options: ' + str(self.options))
+        # self.logger.log('NestApplicationContext options: ' + str(self.options))
         # self.logger.log('NestApplicationContext container: ' +
         #                str(self.container))
         # self.logger.log('NestApplicationContext logger: ' + str(self.logger))
         self.init()
 
     def init(self):
-        self.app = Flask(self.module.name)
-        self.container.set('app', self.app)
-        self.container.set('module', self.module)
+        self.app = self.transport
+        # self.container.set('app', self.app)
+        self.container.set('transport', self.transport)
         self.container.set('NestApplicationContext', self)
         self.container.set('NestContainer', self.container)
-        self.container.set('NestLogger', self.logger)
-        self.setupErrorHandlers()
         self.module.initProviders(module=self.module, container=self.container)
         self.module.initControllers(
             module=self.module, container=self.container)
 
-    def setupErrorHandlers(self):
-        NestErrorHandler(self.app, self.logger)
+    def setupLogger(self):
+        logger = NestLogger()
+        return logger
 
-    def getModule(self):
-        return self.module
+    def setupContainer(self):
+        container = NestContainer()
+        container.set('module', self.module)
+        container.set('logger', self.logger)
+        return container
 
-    def getOptions(self):
-        return self.options
+    def setupTransport(self, transport):
+        if transport is None:
+            transport = HttpTransport()
+        transport.init(context=self.container)
+        return transport
 
-    def getContainer(self):
-        return self.container
-
-    def getLogger(self):
-        return self.logger
-
-    def listen(self, port=3000):
+    def listen(self):
         self.logger.log('NestApplicationContext listen')
-        return self.container.get('app')
+
+        def callback():
+            self.logger.log(f"NestApplicationContext listening")
+        self.transport.listen(callback)
+        return self.app

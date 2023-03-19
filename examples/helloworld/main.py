@@ -1,16 +1,16 @@
-from bottlenest import NestFactory, Transport
+from bottlenest import NestFactory
+from bottlenest.http import HttpTransport
 from examples.helloworld.app.module import AppModule
-
-port = 4000
 
 
 def bootstrap():
-    app = NestFactory.createMicroservice(AppModule, {
-        'transport': Transport.HTTP,
-    })
+    app = NestFactory.createMicroservice(
+        AppModule,
+        transport=HttpTransport(port=4000),
+    )
 
-    return app.listen(port)
+    return app.listen()
 
 
 if __name__ == '__main__':
-    bootstrap().run(port=port)
+    bootstrap()

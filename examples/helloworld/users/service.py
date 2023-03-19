@@ -1,5 +1,5 @@
 from bottlenest.common import Injectable
-from bottlenest.errors.http import HttpError, BadRequestError
+from bottlenest.http.errors import HttpError, BadRequestError
 
 
 @Injectable()

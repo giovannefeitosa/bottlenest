@@ -1,4 +1,4 @@
-from bottlenest.errors.http.HttpError import HttpError
+from bottlenest.http.errors.HttpError import HttpError
 
 
 class BadRequestError(HttpError):
