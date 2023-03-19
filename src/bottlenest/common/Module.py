@@ -18,17 +18,17 @@ class NestModule:
         # self.moduleInstance = moduleClass()
         self.name = moduleClass.__name__
         self.providers = providers
+        self.module = moduleClass()
         print(f"NestModule init", [self.name])
 
-    def initProviders(self, module=None, container=None):
-        theModule = module if module else self
+    def initProviders(self, module, container):
         for imp in self.imports:
-            imp.initProviders(theModule, container)
+            imp.initProviders(imp, container)
         for provider in self.providers:
-            provider.initProvider(theModule, container)
+            provider.initProvider(module, container)
 
-    def initControllers(self, container):
+    def initControllers(self, module, container):
         for imp in self.imports:
-            imp.initControllers(container)
+            imp.initControllers(imp, container)
         for cont in self.controllers:
-            cont.initController(container)
+            cont.initController(module, container)

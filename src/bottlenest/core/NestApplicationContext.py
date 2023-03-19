@@ -29,7 +29,8 @@ class NestApplicationContext:
         self.container.set('NestLogger', self.logger)
         self.setupErrorHandlers()
         self.module.initProviders(module=self.module, container=self.container)
-        self.module.initControllers(self.container)
+        self.module.initControllers(
+            module=self.module, container=self.container)
 
     def setupErrorHandlers(self):
         NestErrorHandler(self.app, self.logger)

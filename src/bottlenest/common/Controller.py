@@ -16,25 +16,41 @@ class NestController:
         self.controllerClass = controllerClass
         # print("-----------------xxx> ", self.controller())
 
-    def initController(self, context):
-        self.controller = self.controllerClass(context)
+    def initController(self, module, appContext):
+        self.module = module
+        self.appContext = appContext
+        self.controllerContext = NestControllerContext(self)
+        self.controller = self.controllerClass(self.controllerContext)
         routeNames = [name for name in dir(self.controller) if type(
             getattr(self.controller, name)).__name__ == 'NestRoute']
         for routeName in routeNames:
             route = getattr(self.controller, routeName)
-            route.initRoute(self.controller, context)
+            route.initRoute(self.controller, appContext)
+
+
+# this context is given to the controller
+class NestControllerContext:
+    def __init__(self, nestController):
+        self.nestController = nestController
+
+    def get(self, key):
+        getName = f"{self.nestController.module.name}.{key}"
+        return self.nestController.appContext.get(getName)
+
+    def inject(self, injectable):
+        key = injectable.__name__
+        getName = f"{self.nestController.module.name}.{key}"
+        provider = self.nestController.appContext.get(getName)
+        if provider is None:
+            raise Exception(f"Provider not found: {getName}")
+        return provider.instance
 
 
 def Get(path):
     print(f"get defined {path}")
 
     def wrapper(func):
-        print("--------------------> ", func)
         return NestRoute(path=path, method='GET', callback=func)
-        # print(f"get wrapper {path}")
-        # def wrapped(*args, **kwargs):
-        #    return func(*args, **kwargs)
-        # return wrapped
     return wrapper
 
 
@@ -43,10 +59,6 @@ def Post(path):
 
     def wrapper(func):
         return NestRoute(path=path, method='POST', callback=func)
-        # print(f"post wrapper {path}")
-        # def wrapped(*args, **kwargs):
-        #    return func(*args, **kwargs)
-        # return wrapped
     return wrapper
 
 
