@@ -5,29 +5,29 @@ from bottlenest.transports.http.decorators.NestRequest import NestRequest
 
 class NestRoute:
     def __init__(self, path, method, callback):
-        print(f"route defined {path} {method} {callback}")
+        print(f"route defined {method} {path}")
         self.callback = callback
-        self.path = self.nestjsToFlaskPath(path)
+        self.path = self._nestjsToFlaskPath(path)
         self.method = method
 
-    def initRoute(self, controller, context):
+    def setup(self, cls, context):
         print(f"init route {self.path}")
         app = context.get('app')
         app.add_url_rule(
             self.path,
             methods=[self.method],
-            view_func=self.callbackWrapper(controller),
+            view_func=self._callbackWrapper(cls),
         )
 
-    def callbackWrapper(self, controller):
+    def _callbackWrapper(self, cls):
         @wraps(self.callback)
         def wrapped(*args, **kwargs):
-            return self.callback(controller, NestRequest(request))
+            return self.callback(cls, NestRequest(request))
             # return self.callback(context)
         return wrapped
 
     # Flask routing is different than NestJS routing
-    def nestjsToFlaskPath(self, path: str) -> str:
+    def _nestjsToFlaskPath(self, path: str) -> str:
         result = ''
         parts = path.split('/')
         for part in parts:

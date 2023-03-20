@@ -1,6 +1,6 @@
 from bottlenest import NestFactory
 from bottlenest.transports.http import HttpTransport
-from examples.helloworld.app.module import AppModule
+from examples.websocketsServer.app.AppModule import AppModule
 
 
 def bootstrap():

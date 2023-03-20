@@ -6,7 +6,7 @@ class WebsocketsTransport:
     def __init__(self, url="ws://localhost:8765"):
         self.url = url
 
-    def init(self, context):
+    def setup(self, context):
         self.context = context
 
     def listen(self, callback):

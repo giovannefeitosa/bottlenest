@@ -14,10 +14,10 @@ class NestInjectable:
         self.instance = None
         # self.dependencies = []
 
-    def initProvider(self, module, container):
+    def setup(self, module, container):
         # self.dependencies = []
         # for dep in self.dependencies:
-        #     dep.initProvider(container)
+        #     dep.setup(container)
         self.module = module
         self.container = container
         container.set(self.getProviderName(), self)

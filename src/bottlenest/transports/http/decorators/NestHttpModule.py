@@ -11,21 +11,13 @@ class NestHttpModule(object):
         self.module = moduleClass()
         print(f"NestModule init", [self.name])
 
-    def init(self, context):
-        self.initProviders(context)
-        self.initControllers(context)
-
-    def initProviders(self, context):
-        for imp in self.imports:
-            imp.initProviders(context)
+    def setup(self, context):
+        for module in self.imports:
+            module.setup(context)
         for provider in self.providers:
-            provider.initProvider(self, context)
-
-    def initControllers(self, context):
-        for imp in self.imports:
-            imp.initControllers(context)
-        for cont in self.controllers:
-            cont.initController(self, context)
+            provider.setup(self, context)
+        for controller in self.controllers:
+            controller.setup(self, context)
 
     # proxy static methods
     def __getattr__(self, name):

@@ -7,7 +7,7 @@ class HttpTransport:
     def __init__(self, port=3500):
         self.port = port
 
-    def init(self, context):
+    def setup(self, context):
         self.context = context
         self.module = self.context.get('module')
         self.logger = self.context.get('logger')

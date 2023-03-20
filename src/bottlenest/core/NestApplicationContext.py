@@ -17,15 +17,16 @@ class NestApplicationContext:
         # self.logger.log('NestApplicationContext container: ' +
         #                str(self.container))
         # self.logger.log('NestApplicationContext logger: ' + str(self.logger))
-        self.init()
+        # ? should this setup be here?
+        self.setup()
 
-    def init(self):
+    def setup(self):
         self.app = self.transport
         # self.container.set('app', self.app)
         self.container.set('transport', self.transport)
         self.container.set('NestApplicationContext', self)
         self.container.set('NestContainer', self.container)
-        self.module.init(self.container)
+        self.module.setup(self.container)
 
     def setupLogger(self):
         logger = NestLogger()
@@ -40,7 +41,7 @@ class NestApplicationContext:
     def setupTransport(self, transport):
         if transport is None:
             transport = HttpTransport()
-        transport.init(context=self.container)
+        transport.setup(context=self.container)
         return transport
 
     def listen(self):

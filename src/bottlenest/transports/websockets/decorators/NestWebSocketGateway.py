@@ -1,34 +1,27 @@
-from flask import request
-from functools import wraps
 from bottlenest.metaClasses.NestProvider import NestProvider
 
-# TODO: add support for route prefix
 
-
-class NestController(metaclass=NestProvider):
+class NestWebSocketGateway(metaclass=NestProvider):
     def __init__(self, cls):
         self.cls = cls
         self.name = cls.__name__
+        # self.port = port
+        # self.namespace = namespace
 
     def setup(self, module, context):
-        # TODO: Essa função deve setar o socket no serviceContext
-        # TODO: para dentro do cls ser possivel acessar a CONEXÃO ATUAL
-        # TODO: -------------
-        # TODO: Mas aí pensei de antes, fazer uma OOP decente
-        # NestController e NestWebSocketGateway
         self.module = module
         self.context = context
-        self.serviceContext = NestControllerContext(self)
+        self.serviceContext = NestWebSocketGatewayContext(self)
         self.provider = self.cls(self.serviceContext)
         eventNames = [name for name in dir(self.provider) if type(
-            getattr(self.provider, name)).__name__ == 'NestRoute']
-        for eventName in eventNames:
-            service = getattr(self.provider, eventName)
-            service.setup(self.provider, context)
+            getattr(self.provider, name)).__name__ == 'NestSubscribeMessage']
+        for name in eventNames:
+            route = getattr(self.provider, name)
+            route.setup(self.provider, context)
 
 
-# this context is given to the controller
-class NestControllerContext:
+# this context is given to the gateway
+class NestWebSocketGatewayContext:
     def __init__(self, provider):
         self.provider = provider
 
@@ -38,12 +31,12 @@ class NestControllerContext:
 
     def get(self, key):
         getName = f"{self.provider.module.name}.{key}"
-        return self.provider.context.get(getName)
+        return self.provider.appContext.get(getName)
 
     def inject(self, injectable):
         key = injectable.__name__
         getName = f"{self.provider.module.name}.{key}"
-        provider = self.provider.context.get(getName)
+        provider = self.provider.appContext.get(getName)
         if provider is None:
             raise Exception(f"Provider not found: {getName}")
         return provider.instance
