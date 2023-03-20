@@ -4,6 +4,8 @@ from bottlenest.transports.http.decorators.NestRequest import NestRequest
 
 
 class NestRoute:
+    __name__ = 'NestRoute'
+
     def __init__(self, path, method, callback):
         print(f"route defined {method} {path}")
         self.callback = callback

@@ -19,7 +19,7 @@ def WebSocketGateway(port=80, namespace=None):
 def SubscribeMessage(eventName):
     def wrapper(messageClass):
         return NestSubscribeMessage(
-            cls=messageClass,
+            callback=messageClass,
             eventName=eventName,
         )
     return wrapper

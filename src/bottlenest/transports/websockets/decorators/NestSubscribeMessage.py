@@ -1,8 +1,7 @@
 class NestSubscribeMessage:
-    def __init__(self, cls, eventName):
-        self.cls = cls
+    def __init__(self, callback, eventName):
         self.eventName = eventName
-        self.name = eventName
+        self.callback = callback
 
     def setup(self, cls, context):
         print(f"setup event {self.eventName}")

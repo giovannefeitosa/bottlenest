@@ -1,42 +1,30 @@
+import eventlet
+import socketio
 from bottlenest.metaClasses.NestProvider import NestProvider
+from bottlenest.transports.websockets.decorators.NestSubscribeMessage import NestSubscribeMessage
 
 
-class NestWebSocketGateway(metaclass=NestProvider):
-    def __init__(self, cls):
+class NestWebSocketGateway(NestProvider):
+    __name__ = 'NestWebSocketGateway'
+
+    def __init__(self, cls, port=4001, namespace=None):
         self.cls = cls
-        self.name = cls.__name__
-        # self.port = port
-        # self.namespace = namespace
+        self.port = port
+        self.namespace = namespace
+        super().__init__(cls)
+
+    def eventName(self):
+        return NestSubscribeMessage.__name__
 
     def setup(self, module, context):
         self.module = module
         self.context = context
-        self.serviceContext = NestWebSocketGatewayContext(self)
-        self.provider = self.cls(self.serviceContext)
-        eventNames = [name for name in dir(self.provider) if type(
-            getattr(self.provider, name)).__name__ == 'NestSubscribeMessage']
-        for name in eventNames:
-            route = getattr(self.provider, name)
-            route.setup(self.provider, context)
 
-
-# this context is given to the gateway
-class NestWebSocketGatewayContext:
-    def __init__(self, provider):
-        self.provider = provider
-
-    #! The following get and inject functions are duplicated
-    #! websockets.decorators.NestWebSocketGateway
-    #! http.decorators.NestController
-
-    def get(self, key):
-        getName = f"{self.provider.module.name}.{key}"
-        return self.provider.appContext.get(getName)
-
-    def inject(self, injectable):
-        key = injectable.__name__
-        getName = f"{self.provider.module.name}.{key}"
-        provider = self.provider.appContext.get(getName)
-        if provider is None:
-            raise Exception(f"Provider not found: {getName}")
-        return provider.instance
+        async def _run():
+            async def _server(websocket):
+                self.context.set('socket', websocket)
+                websocket.emit('message', 'Hello from the server')
+            async with websockets.serve(_server, "localhost", self.port):
+                await asyncio.Future()  # run forever
+        asyncio.run(_run())
+        super(NestProvider, self).setup(self.module, self.context)
