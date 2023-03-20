@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod, ABCMeta
+from bottlenest.metaClasses.NestProviderContext import NestProviderContext
 
 
 class NestProvider(ABCMeta):
@@ -12,5 +13,8 @@ class NestProvider(ABCMeta):
         pass
 
     @abstractmethod
-    def setup(self, module, context):
+    def setup(self, module, context) -> NestProviderContext:
         pass
+
+    def _setup(self, module, context) -> NestProviderContext:
+        return self.setup(module, context)

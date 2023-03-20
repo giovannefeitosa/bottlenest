@@ -16,15 +16,16 @@ class NestController(metaclass=NestProvider):
         # TODO: -------------
         # TODO: Mas aí pensei de antes, fazer uma OOP decente
         # NestController e NestWebSocketGateway
-        self.module = module
-        self.context = context
-        self.serviceContext = NestControllerContext(self)
-        self.provider = self.cls(self.serviceContext)
-        eventNames = [name for name in dir(self.provider) if type(
-            getattr(self.provider, name)).__name__ == 'NestRoute']
-        for eventName in eventNames:
-            service = getattr(self.provider, eventName)
-            service.setup(self.provider, context)
+        # self.module = module
+        # self.context = context
+        # self.serviceContext = NestControllerContext(self)
+        # self.provider = self.cls(self.serviceContext)
+        # eventNames = [name for name in dir(self.provider) if type(
+        #     getattr(self.provider, name)).__name__ == 'NestRoute']
+        # for eventName in eventNames:
+        #     service = getattr(self.provider, eventName)
+        #     service.setup(self.provider, context)
+        return NestControllerContext(module, context)
 
 
 # this context is given to the controller
