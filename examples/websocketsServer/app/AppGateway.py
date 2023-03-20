@@ -9,7 +9,7 @@ class AppGateway:
 
     @SubscribeMessage('message')
     def handleMessageEvent(self, req):
-        print("handleMessageEvent", req)
+        print("[AppGateway] Server received message: ", req)
         return {
             'message': 'Hello from the server',
         }

@@ -58,6 +58,23 @@ files = [
 ]
 
 [[package]]
+name = "bidict"
+version = "0.22.1"
+description = "The bidirectional mapping library for Python."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "bidict-0.22.1-py3-none-any.whl", hash = "sha256:6ef212238eb884b664f28da76f33f1d28b260f665fc737b413b287d5487d1e7b"},
+    {file = "bidict-0.22.1.tar.gz", hash = "sha256:1e0f7f74e4860e6d0943a05d4134c63a2fad86f3d4732fb265bd79e4e856d81d"},
+]
+
+[package.extras]
+docs = ["furo", "sphinx", "sphinx-copybutton"]
+lint = ["pre-commit"]
+test = ["hypothesis", "pytest", "pytest-benchmark[histogram]", "pytest-cov", "pytest-xdist", "sortedcollections", "sortedcontainers", "sphinx"]
+
+[[package]]
 name = "certifi"
 version = "2022.12.7"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -464,23 +481,6 @@ files = [
 ]
 
 [[package]]
-name = "netifaces"
-version = "0.10.6"
-description = "Portable network interface information."
-category = "dev"
-optional = false
-python-versions = "*"
-files = [
-    {file = "netifaces-0.10.6-cp27-cp27m-win32.whl", hash = "sha256:137a77c2e0a68a3e409a532fe73340c3df6a59ffe8eb565ec8b1f0a131402d09"},
-    {file = "netifaces-0.10.6-cp27-cp27m-win_amd64.whl", hash = "sha256:ef223d45b73cc96c25a6295f471106b3195d2367b7f153e43490673d89e9240e"},
-    {file = "netifaces-0.10.6-cp34-cp34m-win32.whl", hash = "sha256:4ddf0f329d83516bba096b7eb1ad2ee354a98e2483f89ad3a590e653ece963c8"},
-    {file = "netifaces-0.10.6-cp34-cp34m-win_amd64.whl", hash = "sha256:61fd2706de21aac11475c921ba0fd98af19d5280702a11c5c8e2e910765dc378"},
-    {file = "netifaces-0.10.6-cp35-cp35m-win32.whl", hash = "sha256:48275e627ce9220acfed2e1ca1e4cf01f58940412f2aebac7995750b50232701"},
-    {file = "netifaces-0.10.6-cp35-cp35m-win_amd64.whl", hash = "sha256:f8b352247ae4b6731192d33fd35b27f247e3e4618a2d5cf65de41d46bbb53223"},
-    {file = "netifaces-0.10.6.tar.gz", hash = "sha256:0c4da523f36d36f1ef92ee183f2512f3ceb9a9d2a45f7d19cda5a42c6689ebe0"},
-]
-
-[[package]]
 name = "packaging"
 version = "23.0"
 description = "Core utilities for Python packages"
@@ -582,6 +582,42 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "python-engineio"
+version = "4.4.0"
+description = "Engine.IO server and client for Python"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "python-engineio-4.4.0.tar.gz", hash = "sha256:bcc035c70ecc30acc3cfd49ef19aca6c51fa6caaadd0fa58c2d7480f50d04cf2"},
+    {file = "python_engineio-4.4.0-py3-none-any.whl", hash = "sha256:11f9c35b775fe70e0a25f67b16d5b69fbfafc368cdd87eeb6f4135a475c88e50"},
+]
+
+[package.extras]
+asyncio-client = ["aiohttp (>=3.4)"]
+client = ["requests (>=2.21.0)", "websocket-client (>=0.54.0)"]
+
+[[package]]
+name = "python-socketio"
+version = "5.8.0"
+description = "Socket.IO server and client for Python"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "python-socketio-5.8.0.tar.gz", hash = "sha256:e714f4dddfaaa0cb0e37a1e2deef2bb60590a5b9fea9c343dd8ca5e688416fd9"},
+    {file = "python_socketio-5.8.0-py3-none-any.whl", hash = "sha256:7adb8867aac1c2929b9c1429f1c02e12ca4c36b67c807967393e367dfbb01441"},
+]
+
+[package.dependencies]
+bidict = ">=0.21.0"
+python-engineio = ">=4.3.0"
+
+[package.extras]
+asyncio-client = ["aiohttp (>=3.4)"]
+client = ["requests (>=2.21.0)", "websocket-client (>=0.54.0)"]
+
+[[package]]
 name = "requests"
 version = "2.27.1"
 description = "Python HTTP for Humans."
@@ -602,23 +638,6 @@ urllib3 = ">=1.21.1,<1.27"
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<5)"]
-
-[[package]]
-name = "setuptools"
-version = "3.3"
-description = "Easily download, build, install, upgrade, and uninstall Python packages"
-category = "dev"
-optional = false
-python-versions = "*"
-files = [
-    {file = "setuptools-3.3-py2.py3-none-any.whl", hash = "sha256:4705222d7b1d308f67bd4a34ff2fb8a35b8a42f68ccb4a60586a2dd979665875"},
-    {file = "setuptools-3.3.tar.gz", hash = "sha256:f3e6155f9bb62bfd59b7f6cc2ecda21aae903e6b585f8bc55e801609c5f7814f"},
-    {file = "setuptools-3.3.zip", hash = "sha256:e085debac72b33ad95da3ed2523b01441e2fb1a5c9279ac3f9e1a78e4119aaf2"},
-]
-
-[package.extras]
-certs = ["certifi (==1.0.1)"]
-"ssl:sys-platform=='win32'" = ["wincertstore (==0.2)"]
 
 [[package]]
 name = "six"
@@ -643,21 +662,6 @@ files = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
     {file = "snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
 ]
-
-[[package]]
-name = "socketio"
-version = "0.2.1"
-description = ""
-category = "dev"
-optional = false
-python-versions = "*"
-files = [
-    {file = "socketio-0.2.1.tar.gz", hash = "sha256:dee5abde39c6021d9d1874582479a4e7f8a8352b38bc7731fb6b27b76976f62c"},
-]
-
-[package.dependencies]
-netifaces = "0.10.6"
-setuptools = "3.3"
 
 [[package]]
 name = "sphinx"
@@ -839,4 +843,4 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10"
-content-hash = "498b7f8658aa2992c4ae6421964d020635245de9a7c5a0fbda4d151207185017"
+content-hash = "ade810c87f9b5f0d54a2297ab52c879ef371baea5d1b6ff4f910d3c266c97bf0"

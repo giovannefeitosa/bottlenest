@@ -3,10 +3,11 @@ class NestContainer:
         self.container = {}
 
     def set(self, key, value):
-        print("NestContainer set", key)
+        print("NestContainer set", key, value)
         self.container[key] = value
 
     def get(self, key):
+        print("NestContainer get", key)
         return self.container[key] if key in self.container else None
 
     def inject(self, injectable):

@@ -30,6 +30,10 @@ class NestProvider(ABC):
         return eventNames
 
     def setup(self, module, context):
+        self._setup(module, context)
+
+    def _setup(self, module, context):
+        print("thiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiis setup")
         self.module = module
         self.context = context
         eventContext = NestProviderContext(self)

@@ -5,10 +5,11 @@ class NestSubscribeMessage:
 
     def setup(self, cls, context):
         print(f"setup event {self.eventName}")
-        socket = context.get('socket')
-        socket.on(self.eventName, self._callbackWrapper(cls))
-        # app.add_url_rule(
-        #     self.path,
-        #     methods=[self.method],
-        #     view_func=self._callbackWrapper(controller),
-        # )
+        sio = context.get('sio')
+
+        @sio.on(self.eventName)
+        def _callback(sid, data):
+            print(f"NestSubscribeMessage {self.eventName}")
+            result = self.callback(cls, data)
+            if result is not None:
+                sio.emit(self.eventName, result, room=sid)

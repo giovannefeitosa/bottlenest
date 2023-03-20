@@ -11,7 +11,6 @@ class NestWebSocketGateway(NestProvider):
         self.cls = cls
         self.port = port
         self.namespace = namespace
-        super().__init__(cls)
 
     def eventName(self):
         return NestSubscribeMessage.__name__
@@ -19,12 +18,12 @@ class NestWebSocketGateway(NestProvider):
     def setup(self, module, context):
         self.module = module
         self.context = context
+        sio = context.get('sio')
+        context.set('port', self.port)
 
-        async def _run():
-            async def _server(websocket):
-                self.context.set('socket', websocket)
-                websocket.emit('message', 'Hello from the server')
-            async with websockets.serve(_server, "localhost", self.port):
-                await asyncio.Future()  # run forever
-        asyncio.run(_run())
-        super(NestProvider, self).setup(self.module, self.context)
+        def _onConnect(sid, environ, auth):
+            print(f"[NestWebsocketGateway] onConnect {sid}")
+
+        sio.on('connect')(_onConnect)
+
+        self._setup(module, context)

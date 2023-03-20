@@ -1,19 +1,22 @@
-import asyncio
-from websockets import connect
+import eventlet
+import socketio
 
 
 class WebsocketsTransport:
-    def __init__(self, url="ws://localhost:8765"):
-        self.url = url
+    def __init__(self):
+        pass
 
     def setup(self, context):
         self.context = context
+        self.module = self.context.get('module')
+        self.logger = self.context.get('logger')
+        sio = socketio.Server()
+        app = socketio.WSGIApp(sio)
+        context.set('sio', sio)
+        context.set('app', app)
 
     def listen(self, callback):
-        self.ws = connect(self.url)
-        self.context.set('ws', self.ws)
-        asyncio.run(self.startServer)
+        port = self.context.get('port')
+        app = self.context.get('app')
+        eventlet.wsgi.server(eventlet.listen(('', port)), app)
         callback()
-
-    async def startServer(self):
-        await self.ws.recv()

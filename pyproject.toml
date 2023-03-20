@@ -43,8 +43,8 @@ pytest = "^7.1.2"
 pytest-cov = "^3.0"
 
 # ...and can be installed only when explicitly requested
-socketio = "^0.2.1"
 eventlet = "^0.33.3"
+python-socketio = "^5.8.0"
 [tool.poetry.group.docs]
 optional = true
 [tool.poetry.group.docs.dependencies]
