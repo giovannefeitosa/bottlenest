@@ -1,5 +1,5 @@
 from bottlenest.transports.cli.decorators import Command
-import inquirer
+import re
 
 
 @Command(
@@ -10,5 +10,19 @@ class EchoCommand:
     def __init__(self, context):
         self.context = context
 
-    def run(self, inquirer, args):
+    def run(self, context, args):
         print("EchoCommand.run: ", args)
+        # ---
+        # Example from official docs
+        # questions = [
+        #     inquirer.List('size',
+        #                   message="What size do you need?",
+        #                   choices=['Jumbo', 'Large', 'Standard',
+        #                            'Medium', 'Small', 'Micro'],
+        #                   ),
+        # ]
+        # answers = inquirer.prompt(questions)
+        # print("")
+        # print("Answers:")
+        # print(answers)
+        # ---

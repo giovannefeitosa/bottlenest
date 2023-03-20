@@ -9,7 +9,7 @@ function goTestIt() {
   #python3 test.py
   # python3 examples/envFile/main.py
   # python3 examples/websocketsServer/main.py
-  python3 examples/clitool/main.py
+  python3 examples/clitool/main.py "$@"
 }
 
-( goTestIt )
+( goTestIt "$@" )

@@ -1,5 +1,7 @@
 import inquirer
 from bottlenest.metaClasses.NestProvider import NestProvider
+from bottlenest.transports.cli.CommandFactory import CommandFactory
+import sys
 
 
 class NestCommand(NestProvider):
@@ -9,11 +11,13 @@ class NestCommand(NestProvider):
         self.cls = cls
         self.commandName = commandName
         self.description = description
+        CommandFactory.register(self)
 
     def eventName(self):
         # return NestRoute.__name__
-        return 'todo'
+        return self.commandName
 
     def setup(self, module, context):
         self._setup(module, context)
-        self.provider.run(inquirer, context)
+        # args = sys.argv[1:]
+        # self.provider.run(inquirer, args)
