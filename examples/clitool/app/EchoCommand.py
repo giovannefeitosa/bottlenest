@@ -11,7 +11,7 @@ class EchoCommand:
         self.context = context
 
     def run(self, context, args):
-        print("EchoCommand.run: ", args)
+        print("EchoCommand.run: ", args.args)
         # ---
         # Example from official docs
         # questions = [
