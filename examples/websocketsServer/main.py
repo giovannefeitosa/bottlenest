@@ -9,7 +9,7 @@ def bootstrap():
         transport=WebsocketsTransport(),
     )
 
-    return app.listen()
+    app.listen()
 
 
 if __name__ == '__main__':

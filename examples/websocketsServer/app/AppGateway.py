@@ -3,7 +3,7 @@ from bottlenest.transports.websockets.decorators import *
 
 @WebSocketGateway(port=8765)
 class AppGateway:
-    # TODO: remove the need of an empty constructor
+    # TODO: remove empty constructor
     def __init__(self, context):
         pass
 
