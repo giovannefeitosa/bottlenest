@@ -6,6 +6,8 @@ import argparse
 
 
 class CommandFactory:
+    __name__ = 'CommandFactory'
+
     __commands__ = {}
     # __args__ = None
     # __currentCommand__ = None
@@ -18,7 +20,7 @@ class CommandFactory:
         """This run will be called from whithin main.py"""
         # initial setup
         logger = NestLogger()
-        container = NestContainer()
+        container = CommandFactory.__buildContainer()
         container.set('module', module)
         container.set('logger', logger)
         container.set('inquirer', inquirer)
@@ -33,20 +35,39 @@ class CommandFactory:
         CommandFactory.__runCommand(container, rawCommandName)
 
     @staticmethod
-    def __runCommand(context, commandName):
-        """This runCommand will be called from whithin NestCommand"""
-        print("CommandFactory runCommand ", commandName)
-        # parse command line arguments
+    def __buildContainer():
+        context = NestContainer()
         parser = argparse.ArgumentParser(
             prog="Program Name",
             description="Program Description",
             epilog="Program Epilog",
         )
+        # TODO:GIOVANNEFEITOSA
         parser.add_argument("command", help="command to run")
-        parser.add_argument("args", nargs=argparse.REMAINDER)
-        commandArgs = parser.parse_args()
+        # parser.add_argument("args", nargs=argparse.REMAINDER)
+        # augment context
+        context.parser = parser
+        context.inquirer = inquirer
+        return context
+
+    @staticmethod
+    def __runCommand(context, commandName):
+        """This runCommand will be called from whithin NestCommand"""
+        print("CommandFactory runCommand ", commandName)
+        # parse command line arguments
+        # parser = CommandFactory.__buildParser(context)
+        # help command
+        if commandName == 'help':
+            context.parser.print_help()
+            return
         # run command
+        print("---------------- 1")
         command = CommandFactory.__commands__[commandName]
+        print("---------------- 2")
+        command.parseArguments(context.parser)
+        print("---------------- 3 ", context.parser)
+        commandArgs = context.parser.parse_args()
+        print("---------------- 4", commandArgs)
         command.cls.run(command, context, commandArgs)
 
     @staticmethod

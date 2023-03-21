@@ -1,4 +1,4 @@
-from bottlenest.transports.cli.decorators import Command
+from bottlenest.transports.cli import Command, CommandArgument
 import re
 
 
@@ -11,7 +11,8 @@ class EchoCommand:
         self.context = context
 
     def run(self, context, args):
-        print("EchoCommand.run: ", args.args)
+        print(f"{self.__name__}.run: ", args.command, args.messageArg)
+        print(args)
         # ---
         # Example from official docs
         # questions = [
@@ -26,3 +27,13 @@ class EchoCommand:
         # print("Answers:")
         # print(answers)
         # ---
+
+    @CommandArgument(
+        name="messageArg",
+        description="The message to echo",
+        type=str,
+        # if True: TypeError: 'required' is an invalid argument for positionals
+        isRequired=False,
+    )
+    def messageArg(self, value):
+        return value
