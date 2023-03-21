@@ -24,22 +24,21 @@ class NestProvider(ABC):
 
     def _getEventNames(self):
         eventClassName = self.eventName()
-        eventNames = dir(self.provider)
+        eventNames = dir(self.classInstance)
         eventNames = [name for name in eventNames if type(
-            getattr(self.provider, name)).__name__ == eventClassName]
+            getattr(self.classInstance, name)).__name__ == eventClassName]
         return eventNames
 
     def setup(self, module, context):
         self._setup(module, context)
 
     def _setup(self, module, context):
-        print("thiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiis setup")
         self.module = module
         self.context = context
         eventContext = NestProviderContext(self)
-        self.provider = self.cls(eventContext)
+        self.classInstance = self.cls(eventContext)
         eventNames = self._getEventNames()
         for eventName in eventNames:
             # print("---->> eventName: ", eventName)
-            event = getattr(self.provider, eventName)
-            event.setup(self.provider, context)
+            event = getattr(self.classInstance, eventName)
+            event.setup(self.classInstance, context)

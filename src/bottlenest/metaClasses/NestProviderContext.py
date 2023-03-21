@@ -4,10 +4,12 @@ from abc import ABC, abstractmethod, ABCMeta
 
 
 class NestProviderContext(ABC):
-    def __init__(self, cls):
-        self.provider = cls
+    def __init__(self, nestProvider):
+        self.provider = nestProvider
 
     def get(self, key):
+        if key.startswith('provider.'):
+            return self.provider.context.get(key.replace('provider.', ''))
         getName = f"{self.provider.module.name}.{key}"
         return self.provider.context.get(getName)
 

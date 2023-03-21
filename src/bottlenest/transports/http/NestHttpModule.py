@@ -12,12 +12,17 @@ class NestHttpModule(object):
         print(f"NestModule init", [self.name])
 
     def setup(self, context):
-        for module in self.imports:
-            module.setup(context)
+        # run setup on providers
+        # these are the most important ones
         for provider in self.providers:
             provider.setup(self, context)
+        # run setup on controllers
+        # this is only used for HttpTransport
         for controller in self.controllers:
             controller.setup(self, context)
+        # run setup on any imported modules
+        for module in self.imports:
+            module.setup(context)
 
     # proxy static methods
     def __getattr__(self, name):

@@ -9,8 +9,8 @@ def main():
     exampleName = sys.argv[1]
     sys.argv = sys.argv[1:]
     os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    print(getattr(examples, exampleName).main())
-    # sys.exit(example.main())
+    getattr(examples, exampleName).main()
+    sys.exit()
 
 
 if __name__ == "__main__":

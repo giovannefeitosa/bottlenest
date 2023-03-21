@@ -1,8 +1,8 @@
-import eventlet
-import socketio
+from .factories.WebsocketsFactory import WebsocketsFactory
 
 
 class WebsocketsTransport:
+    # called by user, passing any options
     def __init__(self):
         pass
 
@@ -10,14 +10,14 @@ class WebsocketsTransport:
         self.context = context
         self.module = self.context.get('module')
         self.logger = self.context.get('logger')
-        sio = socketio.Server()
-        app = socketio.WSGIApp(sio)
-        context.set('sio', sio)
-        context.set('app', app)
 
     def listen(self, callback):
-        # TODO: review this port to allow multiple ports
-        port = self.context.get('port')
-        app = self.context.get('app')
-        eventlet.wsgi.server(eventlet.listen(('', port)), app)
+        WebsocketsFactory.listen()
         callback()
+
+    # def listen(self, callback):
+    #     # TODO: review this port to allow multiple ports
+    #     port = self.context.get('port')
+    #     app = self.context.get('app')
+    #     eventlet.wsgi.server(eventlet.listen(('', port)), app)
+    #     callback()

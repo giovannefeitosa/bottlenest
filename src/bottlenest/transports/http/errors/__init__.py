@@ -1,2 +1,2 @@
-from bottlenest.transports.http.errors.HttpError import HttpError
-from bottlenest.transports.http.errors.BadRequestError import BadRequestError
+from .HttpError import HttpError
+from .BadRequestError import BadRequestError

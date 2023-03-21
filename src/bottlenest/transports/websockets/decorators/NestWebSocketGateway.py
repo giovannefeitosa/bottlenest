@@ -1,7 +1,8 @@
-import eventlet
-import socketio
 from bottlenest.metaClasses.NestProvider import NestProvider
-from bottlenest.transports.websockets.decorators.NestSubscribeMessage import NestSubscribeMessage
+from .NestSubscribeMessage import NestSubscribeMessage
+from ..factories.WebsocketsFactory import WebsocketsFactory
+
+servers = []
 
 
 class NestWebSocketGateway(NestProvider):
@@ -12,18 +13,16 @@ class NestWebSocketGateway(NestProvider):
         self.port = port
         self.namespace = namespace
 
+    def getName(self):
+        return self.cls.__name__
+
     def eventName(self):
         return NestSubscribeMessage.__name__
 
+    # called from whithin the module's setup
     def setup(self, module, context):
         self.module = module
         self.context = context
-        sio = context.get('sio')
-        context.set('port', self.port)
-
-        def _onConnect(sid, environ, auth):
-            print(f"[NestWebsocketGateway] onConnect {sid}")
-
-        sio.on('connect')(_onConnect)
-
+        # get sio from WebsocketsTransport
+        WebsocketsFactory.registerGateway(self, context)
         self._setup(module, context)

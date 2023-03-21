@@ -1,5 +1,5 @@
 from bottlenest.metaClasses.NestProvider import NestProvider
-from bottlenest.transports.http.decorators.NestRoute import NestRoute
+from .NestRoute import NestRoute
 
 # TODO: add support for route prefix
 

@@ -1,5 +1,5 @@
 from bottlenest.common import Controller, Get, Post
-from examples.helloworld.users.service import UsersService
+from .service import UsersService
 
 
 @Controller()

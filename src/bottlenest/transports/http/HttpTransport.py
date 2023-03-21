@@ -1,5 +1,5 @@
 from flask import Flask
-from bottlenest.transports.http.errors import HttpError
+from .errors import HttpError
 import traceback
 
 

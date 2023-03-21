@@ -1,10 +1,6 @@
-from bottlenest.transports.http.decorators.NestHttpModule import NestHttpModule
-from bottlenest.transports.http.decorators.NestController import NestController
-from bottlenest.transports.http.decorators.NestRoute import NestRoute
-
-
-# TODO: Use metaclasses https://www.youtube.com/watch?v=yWzMiaqnpkI
-# 14:11
+from ..NestHttpModule import NestHttpModule
+from .NestController import NestController
+from .NestRoute import NestRoute
 
 
 def Module(controllers=[], imports=[], providers=[]):
@@ -46,5 +42,41 @@ def Post(path):
             callback=func,
             path=path,
             method='POST',
+        )
+    return wrapper
+
+
+def Put(path):
+    print(f"put defined {path}")
+
+    def wrapper(func):
+        return NestRoute(
+            callback=func,
+            path=path,
+            method='PUT',
+        )
+    return wrapper
+
+
+def Delete(path):
+    print(f"delete defined {path}")
+
+    def wrapper(func):
+        return NestRoute(
+            callback=func,
+            path=path,
+            method='DELETE',
+        )
+    return wrapper
+
+
+def Patch(path):
+    print(f"patch defined {path}")
+
+    def wrapper(func):
+        return NestRoute(
+            callback=func,
+            path=path,
+            method='PATCH',
         )
     return wrapper
