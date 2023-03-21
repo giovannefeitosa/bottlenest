@@ -23,9 +23,23 @@ class WebsocketsFactory:
             'providerContext': providerContext,
             'sio': sio,
             'app': app,
+            'port': provider.port,
         }
 
     @staticmethod
     def listen() -> None:
         print("Listen now!")
+
+        def startServer(gateways):
+            pool = eventlet.GreenPool(len(gateways))
+            for gateway in gateways:
+                port = gateway['port']
+                app = gateway['app']
+                print(f"[listen] Starting server on port {port}")
+                pool.spawn(eventlet.wsgi.server,
+                           eventlet.listen(("", port)), app)
+            pool.waitall()
+
+        startServer(WebsocketsFactory.__gateways__.values())
+        # asyncio.run(asyncio.
         # eventlet.wsgi.server(eventlet.listen(('', port)), app)
