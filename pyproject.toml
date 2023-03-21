@@ -53,4 +53,4 @@ Sphinx = "^5.1.1"
 
 # Python-style entrypoints and scripts are easily expressed
 [tool.poetry.scripts]
-my-script = "my_package:main"
+bottlenest = "bottlenest.__main__:main"

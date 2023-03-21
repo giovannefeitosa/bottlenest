@@ -61,13 +61,9 @@ class CommandFactory:
             context.parser.print_help()
             return
         # run command
-        print("---------------- 1")
         command = CommandFactory.__commands__[commandName]
-        print("---------------- 2")
         command.parseArguments(context.parser)
-        print("---------------- 3 ", context.parser)
         commandArgs = context.parser.parse_args()
-        print("---------------- 4", commandArgs)
         command.cls.run(command, context, commandArgs)
 
     @staticmethod

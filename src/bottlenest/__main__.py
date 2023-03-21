@@ -1,12 +1,18 @@
-import sys
-# from .entrypoints import
+from bottlenest.common import Module
+from bottlenest.transports.cli import CommandFactory
+from bottlenest.corecommands.BuildCoreCommand import BuildCoreCommand
+
+
+@Module(
+    providers=[BuildCoreCommand],
+)
+class CoreCliModule:
+    pass
 
 
 def main():
-    print('Hello from BottleNest main!')
-    print(sys.argv)
-    return 0
+    CommandFactory.run(CoreCliModule)
 
 
-if __name__ == '__main__':
-    sys.exit(main())
+if __name__ == "__main__":
+    main()
