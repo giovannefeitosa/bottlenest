@@ -6,15 +6,22 @@ import traceback
 class HttpTransport:
     def __init__(self, port=3500):
         self.port = port
+        self.app = None
 
-    def setup(self, context):
-        self.context = context
-        self.module = self.context.get('module')
-        self.logger = self.context.get('logger')
-        self.app = Flask(self.module.name)
-        self.context.set('app', self.app)
-        self.setupErrorHandlers()
+    # called automatically
+    # when you run NestFactory.createMicroservice
+    # (inside NestApplicationContext)
+    def setup(self, appContext, moduleContext):
+        self.appContext = appContext
+        self.moduleContext = moduleContext
+        self.logger = self.moduleContext.get('logger')
+        self.app = Flask(self.appContext.module.moduleName)
+        # self.appContext.set('app', self.app)
+        # if isinstance(self.moduleContext.get('transport'), HttpTransport):
+        #     print("---------------------> setting up error handlers")
+        #     self.setupErrorHandlers()
 
+    # handle any http errors
     def setupErrorHandlers(self):
         @self.app.errorhandler(Exception)
         def defaultErrorHandler(e):
@@ -25,6 +32,8 @@ class HttpTransport:
                 return e.toDict(), e.statusCode
             return {"messages": [e.__str__()]}, 500
 
+    # start listening for requests
+    # this is called
     def listen(self, callback):
         self.app.run(port=self.port, debug=False)
         callback()

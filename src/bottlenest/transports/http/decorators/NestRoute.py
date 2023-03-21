@@ -11,9 +11,12 @@ class NestRoute:
         self.path = self._nestjsToFlaskPath(path)
         self.method = method
 
-    def setup(self, cls, context):
+    def setup(self, cls, moduleContext):
         print(f"init route {self.path}")
-        app = context.get('app')
+        print(moduleContext)
+        transport = moduleContext.get('transport')
+        app = transport.app
+        # app = moduleContext.get('app')
         app.add_url_rule(
             self.path,
             methods=[self.method],

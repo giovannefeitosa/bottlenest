@@ -1,4 +1,4 @@
-from bottlenest.core.NestContainer import NestContainer
+from bottlenest.core.NestModuleContext import NestModuleContext
 from bottlenest.core.NestLogger import NestLogger
 import sys
 import inquirer
@@ -36,7 +36,7 @@ class CommandFactory:
 
     @staticmethod
     def __buildContainer():
-        context = NestContainer()
+        context = NestModuleContext()
         parser = argparse.ArgumentParser(
             prog="Program Name",
             description="Program Description",

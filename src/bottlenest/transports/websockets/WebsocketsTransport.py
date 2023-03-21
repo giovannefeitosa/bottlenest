@@ -6,10 +6,12 @@ class WebsocketsTransport:
     def __init__(self):
         pass
 
-    def setup(self, context):
-        self.context = context
-        self.module = self.context.get('module')
-        self.logger = self.context.get('logger')
+    def setup(self, appContext, moduleContext):
+        # self.appContext = appContext
+        # self.module = appContext.module
+        # self.logger = appContext.logger
+        WebsocketsFactory.setAppContext(appContext)
+        pass
 
     def listen(self, callback):
         WebsocketsFactory.listen()
@@ -17,7 +19,7 @@ class WebsocketsTransport:
 
     # def listen(self, callback):
     #     # TODO: review this port to allow multiple ports
-    #     port = self.context.get('port')
-    #     app = self.context.get('app')
+    #     port = self.appContext.get('port')
+    #     app = self.appContext.get('app')
     #     eventlet.wsgi.server(eventlet.listen(('', port)), app)
     #     callback()

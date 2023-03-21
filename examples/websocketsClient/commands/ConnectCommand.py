@@ -42,7 +42,8 @@ class ConnectCommand:
         question = inquirer.Text('message', message="Enter a message")
         while True:
             answer = inquirer.prompt([question])
-            if answer['message'] == '':
+            if answer is None or answer['message'] is None or answer['message'] == '':
+                sio.disconnect()
                 break
             print("Sending message: ", answer['message'])
             sio.emit('message', answer['message'])
@@ -52,7 +53,7 @@ class ConnectCommand:
 
         # ------------------------------
         # wait until socket ends
-        sio.wait()
+        # sio.wait()
         # ------------------------------
 
         # ---

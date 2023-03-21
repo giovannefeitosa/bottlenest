@@ -1,22 +1,27 @@
 from abc import ABC, abstractmethod, ABCMeta
 
-# this context is given to the controller
 
-
+# this is the context that is given to a function inside a controller
+# or a subscribe message function
+# it's not the class, but the method inside a class
 class NestProviderContext(ABC):
-    def __init__(self, nestProvider):
+    # nestProvider is an implementation of NestProvider
+    #
+    def __init__(self, nestProvider, moduleContext):
         self.provider = nestProvider
+        self.moduleContext = moduleContext
 
     def get(self, key):
-        if key.startswith('provider.'):
-            return self.provider.context.get(key.replace('provider.', ''))
-        getName = f"{self.provider.module.name}.{key}"
-        return self.provider.context.get(getName)
+        # if key.startswith('provider.'):
+        #     return self.moduleContext.get(key.replace('provider.', ''))
+        # getName = f"{self.provider.module.moduleName}.{key}"
+        # return self.moduleContext.get(getName)
+        return self.moduleContext.get(key)
 
     def inject(self, injectable):
-        key = injectable.__name__
-        getName = f"{self.provider.module.name}.{key}"
-        provider = self.provider.context.get(getName)
+        # getName = f"{self.provider.module.moduleName}.{injectable.providerName}"
+        # provider = self.moduleContext.get(getName)
+        provider = self.moduleContext.get(injectable.providerName)
         if provider is None:
-            raise Exception(f"Provider not found: {getName}")
-        return provider.instance
+            raise Exception(f"Provider not found: {injectable.providerName}")
+        return provider.providerInstance

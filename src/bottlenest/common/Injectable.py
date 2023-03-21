@@ -1,34 +1,32 @@
 def Injectable():
-    def wrapper(providerClass):
+    def wrapper(originalClass):
         return NestInjectable(
-            providerClass=providerClass,
+            originalClass=originalClass,
         )
     return wrapper
 
 
 class NestInjectable:
-    def __init__(self, providerClass):
-        self.name = providerClass.__name__
-        self.__name__ = providerClass.__name__
-        self.providerClass = providerClass
-        self.instance = None
+    __name__ = 'NestInjectable'
+
+    def __init__(self, originalClass):
+        # self.__name__ = originalClass.__name__
+        self.providerName = originalClass.__name__
+        self.originalClass = originalClass
+        self.providerInstance = None
         # self.dependencies = []
 
     def setup(self, module, container):
-        # self.dependencies = []
-        # for dep in self.dependencies:
-        #     dep.setup(container)
-        self.module = module
-        self.container = container
-        container.set(self.getProviderName(), self)
-        self.instance = self.providerClass(container)
-
-    def getProviderName(self):
-        providerName = f"{self.module.name}.{self.name}"
-        return providerName
+        # self.module = module
+        # self.container = container
+        # TODO: This should be a singleton manager
+        self.providerInstance = self.originalClass(container)
+        # providerName = f"{module.moduleName}.{self.providerName}"
+        providerName = self.providerName
+        container.set(providerName, self)
 
     def __repr__(self):
-        return f"{self.name}()"
+        return f"{self.providerName}()"
 
     def __str__(self):
-        return f"{self.name}()"
+        return f"{self.providerName}()"

@@ -9,8 +9,6 @@ class NestFactory:
             module=module,
             transport=transport,
         )
-        # load routes
-        # instance.setup()
         return instance
 
     @staticmethod

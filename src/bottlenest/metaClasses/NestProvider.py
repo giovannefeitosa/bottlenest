@@ -29,16 +29,19 @@ class NestProvider(ABC):
             getattr(self.classInstance, name)).__name__ == eventClassName]
         return eventNames
 
-    def setup(self, module, context):
-        self._setup(module, context)
+    # overridable
+    # called from whithin the module's setup
+    def setup(self, module, moduleContext):
+        self._setup(module, moduleContext)
 
-    def _setup(self, module, context):
-        self.module = module
-        self.context = context
-        eventContext = NestProviderContext(self)
+    def _setup(self, module, moduleContext):
+        # self.module = module
+        # self.moduleContext = moduleContext
+        eventContext = NestProviderContext(self, moduleContext)
         self.classInstance = self.cls(eventContext)
+        # self.classInstance = self.cls(moduleContext)
         eventNames = self._getEventNames()
         for eventName in eventNames:
             # print("---->> eventName: ", eventName)
             event = getattr(self.classInstance, eventName)
-            event.setup(self.classInstance, context)
+            event.setup(self.classInstance, moduleContext)
