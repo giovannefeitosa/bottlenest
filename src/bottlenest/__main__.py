@@ -3,7 +3,9 @@ import sys
 
 
 def main():
-    pass
+    print('Hello from BottleNest main!')
+    print(sys.argv)
+    return 0
 
 
 if __name__ == '__main__':
