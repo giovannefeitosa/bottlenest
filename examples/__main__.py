@@ -1,15 +1,15 @@
 import examples
 import os
-import importlib
+# import importlib
 import sys
-from . import *
+# from . import *
 
 
 def main():
     exampleName = sys.argv[1]
     sys.argv = sys.argv[1:]
     os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    getattr(examples, exampleName).main()
+    getattr(examples, exampleName)()
     sys.exit()
 
 

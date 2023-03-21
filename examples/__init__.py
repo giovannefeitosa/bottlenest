@@ -1,4 +1,5 @@
-import examples.clitool.main as clitool
-import examples.envFile.main as envFile
-import examples.helloworld.main as helloworld
-import examples.websocketsServer.main as websocketsServer
+from .clitool.main import main as clitool
+from .envFile.main import main as envFile
+from .helloworld.main import main as helloworld
+from .websocketsServer.main import main as websocketsServer
+from .websocketsClient.main import main as websocketsClient

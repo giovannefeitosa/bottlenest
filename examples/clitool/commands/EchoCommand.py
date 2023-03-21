@@ -30,10 +30,8 @@ class EchoCommand:
 
     @CommandArgument(
         name="messageArg",
-        description="The message to echo",
+        help="The message to echo",
         type=str,
-        # if True: TypeError: 'required' is an invalid argument for positionals
-        isRequired=False,
     )
     def messageArg(self, value):
         return value
