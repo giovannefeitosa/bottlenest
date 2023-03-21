@@ -24,10 +24,15 @@ class NestCommand(NestProvider):
         for argumentName in arguments:
             argument = getattr(self.cls, argumentName)
             print(f"argument: {argumentName} {argument}")
+            if argument.optional is False:
+                parser.add_argument(
+                    argument.argumentName,
+                    **argument.kwargs,
+                    required=True,
+                )
             parser.add_argument(
                 argument.argumentName,
                 **argument.kwargs,
-                required=True if argument.optional is False else False,
             )
 
     def setup(self, module, context):
