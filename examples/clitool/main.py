@@ -11,5 +11,9 @@ class AppModule:
     pass
 
 
-if __name__ == '__main__':
+def main():
     CommandFactory.run(AppModule)
+
+
+if __name__ == '__main__':
+    main()

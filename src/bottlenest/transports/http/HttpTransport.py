@@ -26,5 +26,5 @@ class HttpTransport:
             return {"messages": [e.__str__()]}, 500
 
     def listen(self, callback):
-        self.app.run(port=self.port, debug=True)
+        self.app.run(port=self.port, debug=False)
         callback()
