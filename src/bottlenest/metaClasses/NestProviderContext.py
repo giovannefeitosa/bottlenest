@@ -12,8 +12,8 @@ class NestProviderContext(ABC):
         self.moduleContext = moduleContext
 
     def get(self, key):
-        # if key.startswith('provider.'):
-        #     return self.moduleContext.get(key.replace('provider.', ''))
+        if key.startswith('provider.'):
+            return self.moduleContext.get(key.replace('provider.', ''))
         # getName = f"{self.provider.module.moduleName}.{key}"
         # return self.moduleContext.get(getName)
         return self.moduleContext.get(key)

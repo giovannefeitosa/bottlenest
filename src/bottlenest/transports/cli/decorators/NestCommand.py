@@ -35,7 +35,7 @@ class NestCommand(NestProvider):
                 **argument.kwargs,
             )
 
-    def setup(self, module, context):
-        self._setup(module, context)
+    def setupProvider(self, module, context):
+        self._setupProvider(module, context)
         # args = sys.argv[1:]
         # self.provider.run(inquirer, args)

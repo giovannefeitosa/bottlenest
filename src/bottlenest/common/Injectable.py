@@ -1,3 +1,6 @@
+from ..metaClasses.NestProvider import NestProvider
+
+
 def Injectable():
     def wrapper(originalClass):
         return NestInjectable(
@@ -6,17 +9,27 @@ def Injectable():
     return wrapper
 
 
-class NestInjectable:
+class NestInjectable(NestProvider):
     __name__ = 'NestInjectable'
 
     def __init__(self, originalClass):
         # self.__name__ = originalClass.__name__
+        self.cls = originalClass
         self.providerName = originalClass.__name__
         self.originalClass = originalClass
         self.providerInstance = None
         # self.dependencies = []
 
-    def setup(self, module, container):
+    def getName(self):
+        return self.providerName
+
+    def eventName(self):
+        return self.providerName
+
+    # def enableProvider(self):
+    #    pass
+
+    def setupInjectable(self, module, container):
         # self.module = module
         # self.container = container
         # TODO: This should be a singleton manager

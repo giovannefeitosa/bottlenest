@@ -1,3 +1,4 @@
+from inspect import signature
 from abc import ABC, abstractmethod, ABCMeta, abstractproperty
 from bottlenest.metaClasses.NestProviderContext import NestProviderContext
 
@@ -20,7 +21,11 @@ class NestProvider(ABC):
 
     def __init__(self, cls):
         self.cls = cls
+        self.isEnabled = False
         # self.name = cls.__name__
+
+    def enableProvider(self):
+        self.isEnabled = True
 
     def _getEventNames(self):
         eventClassName = self.eventName()
@@ -31,17 +36,28 @@ class NestProvider(ABC):
 
     # overridable
     # called from whithin the module's setup
-    def setup(self, module, moduleContext):
-        self._setup(module, moduleContext)
+    def setupProvider(self, module, moduleContext):
+        print("NestProvider setupProvider")
+        self._setupProvider(module, moduleContext)
 
-    def _setup(self, module, moduleContext):
+    def _setupProvider(self, module, moduleContext):
+        print("NestProvider _setupProvider")
         # self.module = module
         # self.moduleContext = moduleContext
         eventContext = NestProviderContext(self, moduleContext)
-        self.classInstance = self.cls(eventContext)
+        # get number of arguments in __init__
+        nargs = len(signature(self.cls.__init__).parameters)
+        # if self.cls has a __init__ method with 2 args
+        if nargs == 2:
+            self.classInstance = self.cls(eventContext)
+        else:
+            self.classInstance = self.cls()
         # self.classInstance = self.cls(moduleContext)
         eventNames = self._getEventNames()
         for eventName in eventNames:
             # print("---->> eventName: ", eventName)
             event = getattr(self.classInstance, eventName)
-            event.setup(self.classInstance, moduleContext)
+            event.setupEvent(self.classInstance, moduleContext)
+
+    def listen(self):
+        pass

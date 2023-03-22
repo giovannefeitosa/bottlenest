@@ -1,17 +1,15 @@
-from bottlenest.common import Module
-from bottlenest.transports.cli import CommandFactory
-from .commands.ConnectCommand import ConnectCommand
-
-
-@Module(
-    providers=[ConnectCommand],
-)
-class AppModule:
-    pass
+from bottlenest import NestFactory
+from bottlenest.transports.http import HttpTransport
+from .AppModule import AppModule
 
 
 def main():
-    CommandFactory.run(AppModule)
+    app = NestFactory.createMicroservice(
+        AppModule,
+        transport=HttpTransport(port=8012),
+    )
+
+    app.listen()
 
 
 if __name__ == '__main__':

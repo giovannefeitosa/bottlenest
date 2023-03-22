@@ -10,6 +10,7 @@ class NestWebSocketGateway(NestProvider):
 
     def __init__(self, cls, port=4001, namespace=None):
         self.cls = cls
+        self.providerName = cls.__name__
         self.port = port
         self.namespace = namespace
 
@@ -20,9 +21,10 @@ class NestWebSocketGateway(NestProvider):
         return NestSubscribeMessage.__name__
 
     # called from whithin the module's setup
-    def setup(self, module, context):
+    def setupProvider(self, module, context):
+        print(f"NestSocketGateway setupProvider {self.providerName}")
         self.module = module
         self.context = context
         # get sio from WebsocketsTransport
         WebsocketsFactory.registerGateway(self, context)
-        self._setup(module, context)
+        self._setupProvider(module, context)

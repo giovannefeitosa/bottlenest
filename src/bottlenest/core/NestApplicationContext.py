@@ -7,21 +7,19 @@ class NestApplicationContext:
     def __init__(self, module, transport):
         self.logger = self.__setupLogger()
         self.module = module
+        self.module.enableModule()
         self.moduleName = module.moduleName
         self.moduleContext = self.__setupModuleContext(
             module=module,
             logger=self.logger,
         )
-        # Calls NestInputTransport.setup()
-        # creates the Flask app
-        self.transport = self.__setupInputTransport(
-            transport=transport,
-            appContext=self,
-            moduleContext=self.moduleContext,
-        )
         # Calls NestHttpModule.setup()
         # self.setup()
-        self.module.setup(self.moduleContext)
+        self.module.setupModule(
+            appContext=self,
+            moduleContext=self.moduleContext,
+            transport=transport,
+        )
 
     # def setup(self):
     #     # self.app = self.transport
@@ -41,17 +39,6 @@ class NestApplicationContext:
         moduleContext.set('logger', logger)
         return moduleContext
 
-    def __setupInputTransport(self, transport, appContext, moduleContext):
-        if transport is None:
-            transport = HttpTransport()
-        transport.setup(appContext=appContext, moduleContext=moduleContext)
-        moduleContext.set('transport', transport)
-        return transport
-
     def listen(self):
         self.logger.log('NestApplicationContext listen')
-
-        def callback():
-            self.logger.log(f"NestApplicationContext stopped")
-        self.transport.listen(callback)
-        # return self.transport.app
+        self.module.listen()

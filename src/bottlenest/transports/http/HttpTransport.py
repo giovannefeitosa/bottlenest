@@ -11,7 +11,8 @@ class HttpTransport:
     # called automatically
     # when you run NestFactory.createMicroservice
     # (inside NestApplicationContext)
-    def setup(self, appContext, moduleContext):
+    def setupTransport(self, appContext, moduleContext):
+        print("HttpTransport setupTransport")
         self.appContext = appContext
         self.moduleContext = moduleContext
         self.logger = self.moduleContext.get('logger')
@@ -35,5 +36,6 @@ class HttpTransport:
     # start listening for requests
     # this is called
     def listen(self, callback):
+        print(f"HttpTransport listen port={self.port}")
         self.app.run(port=self.port, debug=False)
         callback()

@@ -6,7 +6,7 @@ class WebsocketsTransportClient:
     def __init__(self):
         pass
 
-    def setup(self, context):
+    def setupTransport(self, context):
         self.context = context
         self.module = self.context.get('module')
         self.logger = self.context.get('logger')

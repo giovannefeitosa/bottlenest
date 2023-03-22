@@ -11,8 +11,8 @@ class NestRoute:
         self.path = self._nestjsToFlaskPath(path)
         self.method = method
 
-    def setup(self, cls, moduleContext):
-        print(f"init route {self.path}")
+    def setupEvent(self, cls, moduleContext):
+        print(f"NestRoute setupEvent {self.path}")
         print(moduleContext)
         transport = moduleContext.get('transport')
         app = transport.app

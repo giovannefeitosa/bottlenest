@@ -25,7 +25,7 @@ class CommandFactory:
         container.set('logger', logger)
         container.set('inquirer', inquirer)
         # load module
-        module.setup(container)
+        module.setupModule(container)
         # parse initial command line arguments
         # and set __currentCommand__
         rawCommandName = sys.argv[1]
