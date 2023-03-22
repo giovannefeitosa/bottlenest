@@ -44,14 +44,15 @@ class NestProvider(ABC):
         print("NestProvider _setupProvider")
         # self.module = module
         # self.moduleContext = moduleContext
-        eventContext = NestProviderContext(self, moduleContext)
         # get number of arguments in __init__
-        nargs = len(signature(self.cls.__init__).parameters)
         # if self.cls has a __init__ method with 2 args
+        nargs = len(signature(self.cls.__init__).parameters)
         if nargs == 2:
+            eventContext = NestProviderContext(self, moduleContext)
             self.classInstance = self.cls(eventContext)
         else:
             self.classInstance = self.cls()
+        moduleContext.set(self.name, self)
         # self.classInstance = self.cls(moduleContext)
         eventNames = self._getEventNames()
         for eventName in eventNames:

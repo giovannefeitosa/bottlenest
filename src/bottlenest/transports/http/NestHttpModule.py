@@ -1,4 +1,5 @@
 from .HttpTransport import HttpTransport
+from ..websockets.factories.WebsocketsFactory import WebsocketsFactory
 
 
 class NestHttpModule(object):
@@ -26,10 +27,11 @@ class NestHttpModule(object):
     # called automatically
     # when you run NestFactory.createMicroservice
     # (inside NestApplicationContext)
-    def setupModule(self, appContext, moduleContext, transport):
+    def setupModule(self, appContext, moduleContext, transport=None):
         print(f"NestHttpModule setupModule {self.moduleName}")
         if not self.isEnabled:
             raise Exception(f"Module not enabled: {self.moduleName}")
+        WebsocketsFactory.setAppContext(appContext)
         # Calls NestInputTransport.setupTransport()
         # creates the Flask app
         self.__setupInputTransport(
@@ -67,8 +69,21 @@ class NestHttpModule(object):
         if not self.isEnabled:
             raise Exception(f"Module not enabled: {self.moduleName}")
 
+        # print("------------------------ 1")
+        # for module in self.imports:
+        #     print("------------------------ 2 ", module.moduleName)
+        #     if module.isEnabled:
+        #         print("------------------------ 3")
+        #         for provider in module.providers:
+        #             print("------------------------ 4 ", provider.getName())
+        #             if provider.isEnabled:
+        #                 print("------------------------ 5")
+        #                 provider.listen()
+        #         # module.listen()
+
         def callback():
             # self.logger.log(f"NestApplicationContext stopped")
             print(f"NestApplicationContext stopped")
         # self.transport = self.moduleContext.get('transport')
+        WebsocketsFactory.listen()
         self.transport.listen(callback)

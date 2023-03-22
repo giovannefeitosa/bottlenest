@@ -28,3 +28,6 @@ class NestWebSocketGateway(NestProvider):
         # get sio from WebsocketsTransport
         WebsocketsFactory.registerGateway(self, context)
         self._setupProvider(module, context)
+
+    def listen(self):
+        print(f"NestSocketGateway listen {self.providerName}")

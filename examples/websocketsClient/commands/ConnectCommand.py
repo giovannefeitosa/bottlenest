@@ -75,7 +75,7 @@ class ConnectCommand:
         name="--url, -u",
         dest="serverUrl",
         type=str,
-        default="http://localhost:8765"
+        default="http://localhost:8013"
     )
     def serverUrlArg(self, value):
         return value

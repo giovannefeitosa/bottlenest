@@ -24,4 +24,4 @@ class NestProviderContext(ABC):
         provider = self.moduleContext.get(injectable.providerName)
         if provider is None:
             raise Exception(f"Provider not found: {injectable.providerName}")
-        return provider.providerInstance
+        return provider.classInstance

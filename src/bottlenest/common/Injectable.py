@@ -17,7 +17,7 @@ class NestInjectable(NestProvider):
         self.cls = originalClass
         self.providerName = originalClass.__name__
         self.originalClass = originalClass
-        self.providerInstance = None
+        self.classInstance = None
         # self.dependencies = []
 
     def getName(self):
@@ -30,10 +30,12 @@ class NestInjectable(NestProvider):
     #    pass
 
     def setupInjectable(self, module, container):
+        print(
+            f"NestInjectable setupInjectable {self.providerName} {container}")
         # self.module = module
         # self.container = container
         # TODO: This should be a singleton manager
-        self.providerInstance = self.originalClass(container)
+        self.classInstance = self.originalClass(container)
         # providerName = f"{module.moduleName}.{self.providerName}"
         providerName = self.providerName
         container.set(providerName, self)

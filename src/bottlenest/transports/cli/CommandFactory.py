@@ -25,7 +25,23 @@ class CommandFactory:
         container.set('logger', logger)
         container.set('inquirer', inquirer)
         # load module
-        module.setupModule(container)
+
+        def __setupModuleContext(module, logger):
+            moduleContext = NestModuleContext()
+            moduleContext.set('module', module)
+            moduleContext.set('logger', logger)
+            moduleContext.module = module  # TODO: move this
+            return moduleContext
+        moduleContext = __setupModuleContext(
+            module=module,
+            logger=logger,
+        )
+        module.enableModule()
+        # TODO: review this
+        module.setupModule(
+            moduleContext,
+            container,
+        )
         # parse initial command line arguments
         # and set __currentCommand__
         rawCommandName = sys.argv[1]

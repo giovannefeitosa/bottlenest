@@ -18,6 +18,9 @@ class NestCommand(NestProvider):
         # return NestRoute.__name__
         return self.commandName
 
+    def getName(self):
+        return self.commandName
+
     def parseArguments(self, parser):
         arguments = [ag for ag in dir(self.cls) if isinstance(
             getattr(self.cls, ag), NestCommandArgument)]
