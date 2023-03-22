@@ -27,7 +27,7 @@ class WebsocketsFactory:
         }
 
     @staticmethod
-    def setupGateway(pool, gatewayDict):
+    def setupGateway(gatewayDict):
         sio = gatewayDict['sio']
         provider = gatewayDict['provider']
         providerContext = gatewayDict['providerContext']
@@ -40,30 +40,26 @@ class WebsocketsFactory:
         # app = socketio.WSGIApp(sio)
 
         def _onConnect(sid, environ, auth):
-            print(f"[NestWebsocketGateway] onConnect {sid}")
+            print(f"[NestWebsocketsFactory] onConnect {sid}")
         sio.on('connect')(_onConnect)
 
         app = socketio.WSGIApp(sio, httpTransport.app)
-        print(f"[listen] Starting server on port {port}")
+        eventlet.wsgi.server(eventlet.listen(('0.0.0.0', port)), app)
+        print(f"[listen] Starting websockets server on port {port}")
         # pool.spawn(eventlet.wsgi.server,
         #           eventlet.listen(("", port)), app)
         # run pool.spawn with Flask (app) and eventlet.listen(("", port))
-        pool.spawn(eventlet.wsgi.server,
-                   eventlet.listen(("", port)), app)
+        # return pool.spawn(eventlet.wsgi.server,
+        #                   eventlet.listen(("0.0.0.0", port)), app)
 
     @staticmethod
-    def listen() -> None:
+    def listen(pool) -> None:
         print("Listen WEBSOCKETSSSSSS now!")
 
         def startServer(gateways):
-            pool = eventlet.GreenPool(len(gateways))
             for gateway in gateways:
-                WebsocketsFactory.setupGateway(pool, gateway)
-            try:
-                pool.waitall()
-            except KeyboardInterrupt:
-                pass
+                pool.spawn(WebsocketsFactory.setupGateway, gateway)
 
-        startServer(WebsocketsFactory.__gateways__.values())
+        return startServer(WebsocketsFactory.__gateways__.values())
         # asyncio.run(asyncio.
         # eventlet.wsgi.server(eventlet.listen(('', port)), app)

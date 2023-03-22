@@ -5,7 +5,7 @@ from .ws.WsModule import WsModule
 
 
 @Module(
-    imports=[WsModule],
+    imports=[WsModule, ApiModule],
 )
 class AppModule:
     pass

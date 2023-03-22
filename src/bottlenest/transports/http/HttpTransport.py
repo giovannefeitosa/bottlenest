@@ -1,6 +1,8 @@
 from flask import Flask
 from .errors import HttpError
 import traceback
+import eventlet
+from eventlet import wsgi
 
 
 class HttpTransport:
@@ -35,7 +37,13 @@ class HttpTransport:
 
     # start listening for requests
     # this is called
-    def listen(self, callback):
+    def listen(self, pool, callback):
         print(f"HttpTransport listen port={self.port}")
-        self.app.run(port=self.port, debug=False)
+        # self.app.run(port=self.port, debug=False)
+        # spawned = pool.spawn(self.app.run, port=self.port, debug=False)
+
+        def _startHttpServer(port, app):
+            wsgi.server(eventlet.listen(('0.0.0.0', port)), app)
+        pool.spawn(_startHttpServer, self.port, self.app)
         callback()
+        # return self.app.run(port=self.port, debug=False)

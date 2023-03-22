@@ -1,3 +1,4 @@
+import eventlet
 from .HttpTransport import HttpTransport
 from ..websockets.factories.WebsocketsFactory import WebsocketsFactory
 
@@ -81,9 +82,56 @@ class NestHttpModule(object):
         #                 provider.listen()
         #         # module.listen()
 
-        def callback():
-            # self.logger.log(f"NestApplicationContext stopped")
-            print(f"NestApplicationContext stopped")
-        # self.transport = self.moduleContext.get('transport')
-        WebsocketsFactory.listen()
-        self.transport.listen(callback)
+        poolQtt = len(WebsocketsFactory.__gateways__.values()) + 1
+        pool = eventlet.GreenPool(poolQtt)
+        # pool = eventlet.GreenPile()
+        # runningServers = []
+
+        def __listenTransport(self, pool):
+            def callback():
+                # self.logger.log(f"NestApplicationContext stopped")
+                print(f"NestApplicationContext running callback")
+            # self.transport = self.moduleContext.get('transport')
+            if isinstance(self.transport, HttpTransport):
+                # listen for websockets
+                WebsocketsFactory.listen(pool)
+                # runningServers.extend(gateways)
+            # listen for http
+            self.transport.listen(pool, callback)
+        __listenTransport(self, pool)
+
+        # for result in pool:
+        #     print(f"NestApplicationContext result", result)
+        try:
+            print("NestApplicationContext running...")
+            pool.waitall()
+        except KeyboardInterrupt:
+            print("NestApplicationContext keyboard interrupt")
+            # for server in runningServers:
+            #     server.kill()
+        # ---
+        # for server in runningServers:
+        #     print(f"First server ended! {type(server)}")
+        #     if isinstance(server, eventlet.greenthread.GreenThread):
+        #         print("waiiit")
+        #         server.wait()
+        #         continue
+        #     if server is not None:
+        #         server.kill()
+        # print("-----------------x------------------ ", runningServers)
+
+        # while True:
+        #     endAll = False
+        #     for server in runningServers:
+        #         # server is a GreenThread
+        #         # check if it's pending
+        #         if not server.dead:
+        #             continue
+        #         # check if it's dead
+        #         else:
+        #             endAll = True
+        #             break
+        #     if endAll:
+        #         break
+        #     eventlet.sleep(0.1)
+        # print("NestApplicationContext ended")
