@@ -18,7 +18,7 @@ class NewCoreCommand:
             f"Creating project '{args.name}' from template '{args.template}'...")
         exampleFolder = f"templates/{args.template}"
         # copy exampleFolder to current folder
-        FileUtils.copyDir(exampleFolder, f"./{args.name}")
+        FileUtils.copyDir(FileUtils.absPath(exampleFolder), f"./{args.name}")
         print(f"Project '{args.name}' created!")
 
     @CommandArgument(

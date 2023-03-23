@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bottlenest"
-version = "0.0.9"
+version = "0.0.19"
 description = "A small example package"
 
 license = "MIT"
@@ -19,6 +19,11 @@ readme = ["README.md", "LICENSE"]
 # keywords = ["packaging", "poetry"]
 keywords = ["example"]
 
+# Include template files
+packages = [
+  { include = "bottlenest", from = "src" },
+]
+
 [tool.poetry.dependencies]
 # Compatible Python versions
 python = ">=3.10,<4"
@@ -35,6 +40,9 @@ python = ">=3.10,<4"
 # Flask
 flask = { version = "^2.2.3" }
 python-dotenv = "^1.0.0"
+eventlet = "^0.33.3"
+python-socketio = "^5.8.0"
+requests = "^2.28.2"
 
 # Dependency groups are supported for organizing your dependencies
 asyncio = "^3.4.3"
@@ -44,9 +52,7 @@ pytest = "^7.1.2"
 pytest-cov = "^3.0"
 
 # ...and can be installed only when explicitly requested
-eventlet = "^0.33.3"
-python-socketio = "^5.8.0"
-requests = "^2.28.2"
+
 [tool.poetry.group.docs]
 optional = true
 [tool.poetry.group.docs.dependencies]
