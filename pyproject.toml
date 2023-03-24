@@ -72,8 +72,8 @@ sphinx-rtd-theme = "^1.2.0"
 [tool.poetry.scripts]
 # Python-style entrypoints and scripts are easily expressed
 bottlenest = "bottlenest.__main__:main"
-build-docs = "docs.build_docs:main"
-run-docs = "docs.run_docs:main"
+docs-build = "docs.__main__:build"
+docs-run = "docs.__main__:run"
 example-apisocket = "examples.apisocket.main:main"
 example-clitool = "examples.clitool.main:main"
 example-envFile = "examples.envFile.main:main"

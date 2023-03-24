@@ -9,3 +9,5 @@ Welcome to BottleNest's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   GettingStarted
