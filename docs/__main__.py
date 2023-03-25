@@ -36,4 +36,5 @@ def run():
 def build():
     # sys.path.insert(0, os.path.abspath('src/bottlenest'))
     # os.system("sphinx-build -b html docs dist-docs")
+    os.system("rm -rf dist-docs")
     os.system("make -C docs html")
