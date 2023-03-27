@@ -4,16 +4,15 @@ import os
 
 class NestFactory:
     @staticmethod
-    def createMicroservice(module, transport=None):
-        instance = NestFactory.createApplicationContext(
-            module=module,
+    def create(moduleClass, transport=None):
+        return NestApplicationContext(
+            moduleClass=moduleClass,
             transport=transport,
         )
-        return instance
 
     @staticmethod
-    def createApplicationContext(module, transport):
+    def createMicroservice(moduleClass, transport=None):
         return NestApplicationContext(
-            module=module,
+            moduleClass=moduleClass,
             transport=transport,
         )

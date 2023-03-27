@@ -23,4 +23,6 @@
     "tab.unfocusedInactiveBackground": "#192938",
     "tab.unfocusedInactiveForeground": "#677786"
   },
+  "plantuml.diagramsRoot": "docs/plantuml/src",
+  "plantuml.exportOutDir": "docs/plantuml/out",
 }

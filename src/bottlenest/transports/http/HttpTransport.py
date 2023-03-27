@@ -3,12 +3,16 @@ from .errors import HttpError
 import traceback
 import eventlet
 from eventlet import wsgi
+from bottlenest.core.NestTransport import NestTransport
 
 
-class HttpTransport:
+class HttpTransport(NestTransport):
     def __init__(self, port=3500):
         self.port = port
         self.app = None
+
+    def getTransportKey(self):
+        return 'HttpTransport', f"{self.port}"
 
     # called automatically
     # when you run NestFactory.createMicroservice

@@ -1,0 +1,122 @@
+@startuml BottleNest
+  !theme spacelab
+
+  package "meta" {
+    class NestTransport {
+      Acts as a server for other applications.
+      
+      +(String, String,) getTransportKey()
+      +void listen(pool)
+      ---
+      **note 1:** This is the class that will be used to create 
+      the transport for the module
+      **note 2:** It's the class that will be used to create the 
+      transport for the application
+    }
+
+    class NestProvider {
+      This class deals with dependency injection.
+      It handles the creation of instances of the providerClass.
+      A provider is able to whether create a singleton or 
+      manage the instances manually.
+      
+      +NestProvider(providerClass, moduleContext)
+    }
+  }
+
+  package "core" {
+    class NestFactory {
+      +static create(moduleClass, transport=None)
+      +static createMicroservice(moduleClass, transport=None)
+    }
+
+    class NestApplicationContext {
+      It's the main class, it initializes the application.
+      Sets up the transport and create the root module.
+      
+      +dict transports
+      {"TransportClass": {"transportId": NestTransport}}
+
+      +NestApplicationContext(moduleClass, transport=None)
+      step 1: setup the transport
+      step 2: create the module
+      +any ____get(group, key, defaultValue=None)
+      +void ____set(group, key, value)
+      +void addTransport(transport)
+      +NestTransport? getTransport(transport)
+      +HttpTransport getDefaultHttpTransport()
+      +void listen()
+      ---
+      **note 1:** Use this to share data across modules
+    }
+
+    class NestModule {
+      It's a way to import providers and other modules
+
+      +NestModule(moduleClass, \
+      imports, controllers, 
+      providers, \
+      appContext, transport=None)
+      ---
+      When a module gets loaded:
+      step 1: create the NestModuleContext
+      step 2: create modules
+      step 3: create providers
+      step 4: create controllers
+    }
+
+    class NestModuleContext {
+      It's the context of a module, it's used to store
+      the instances of the providers and controllers.
+
+      +NestModuleContext(appContext)
+      +any ____get(key, defaultValue=None)
+      +void ____set(key, value)
+      +HttpTransport getDefaultHttpTransport()
+      +NestTransport getOrCreateTransport(transport)
+    }
+
+    NestTransport -[#afa]> NestFactory
+    NestFactory <-[#afa] NestModule
+    NestFactory -[#afa]> NestApplicationContext
+    NestApplicationContext -[#393]> NestModule
+    NestModule -[#393]> NestModuleContext
+    NestModuleContext -[hidden]> NestProvider
+    NestModule -[#393]> NestProvider
+  }
+
+  package "HTTP" {
+    class HttpTransport extends NestTransport {
+      Default transport.
+
+      +HttpTransport(port)
+    }
+
+    class NestController extends NestProvider {
+      Create a route group for the default 
+      HttpTransport.
+
+      +NestController(providerClass, moduleContext)
+    }
+  }
+
+  package "Socket.io" {
+    class WsTransport extends NestTransport {
+      Act as an input transport if you want only
+      websockets.
+      If you want HTTP + Websockets, use
+      HttpTransport instead.
+
+      +WsTransport(port)
+    }
+
+    class WebSocketGateway extends NestProvider {
+      Get/Create instance of WsTransport.
+      Calls NestModuleContext.getTransport
+      and NestModuleContext.addTransport.
+
+      +WebSocketGateway(port)
+    }
+  }
+
+@enduml
