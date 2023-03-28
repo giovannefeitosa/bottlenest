@@ -1,12 +1,13 @@
 class NestSubscribeMessage:
+    __name__ = 'NestSubscribeMessage'
+
     def __init__(self, callback, eventName):
         self.eventName = eventName
         self.callback = callback
 
     # called from whithin NestWebsocketGateway._setupProvider()
-    def setupEvent(self, cls, context):
+    def setupEvent(self, cls, sio):
         print(f"setup event {self.eventName}")
-        sio = context.get('sio')
 
         @sio.on(self.eventName)
         def _callback(sid, data):

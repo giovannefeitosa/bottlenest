@@ -21,20 +21,10 @@ class NestWebSocketGateway(NestProvider):
         except TypeError:
             self.provider = self.providerClass(moduleContext)
 
-    # def getName(self):
-    #     return self.providerClass.__name__
-
-    # def eventName(self):
-    #     return NestSubscribeMessage.__name__
-
-    # called from whithin the module's setup
-    # def setupProvider(self, module, context):
-    #     print(f"NestSocketGateway setupProvider {self.providerName}")
-    #     self.module = module
-    #     self.context = context
-    #     # get sio from WebsocketsTransport
-    #     # WebsocketsFactory.registerGateway(self, context)
-    #     self._setupProvider(module, context)
+    def _getEvents(self, provider):
+        for key in dir(provider):
+            if type(getattr(provider, key)).__name__ == 'NestSubscribeMessage':
+                yield getattr(provider, key)
 
     def listen(self, pool):
         print(f"NestSocketGateway listen {self.providerName}")
@@ -42,6 +32,8 @@ class NestWebSocketGateway(NestProvider):
         def _startWebsocketsServer():
             print("starting websockets server")
             sio = socketio.Server()
+            for event in self._getEvents(self.provider):
+                event.setupEvent(self.provider, sio)
             app = socketio.WSGIApp(sio)
             eventlet.wsgi.server(eventlet.listen(('', self.port)), app)
         pool.spawn(_startWebsocketsServer)
