@@ -6,6 +6,7 @@
       Acts as a server for other applications.
       
       +(String, String,) getTransportKey()
+      +void setupTransport(self, appContext, moduleContext)
       +void listen(pool)
       ---
       **note 1:** This is the class that will be used to create 
@@ -94,7 +95,10 @@
       Default transport.
 
       +HttpTransport(port)
+      +void setupTransport(self, appContext, 
+      moduleContext)
       +Flask getFlaskApp()
+      +void listen(pool)
     }
 
     class NestController extends NestProvider {
@@ -102,7 +106,28 @@
       HttpTransport.
 
       +NestController(providerClass, moduleContext)
+      +void listen(pool)
     }
+
+    class NestRoute {
+      Create a route.
+
+      +NestRoute(path, method, callback)
+      +void setupRoute(provider, flaskApp)
+      +void listen(pool)
+    }
+
+    class NestRequest {
+      +NestRequest(request)
+      +dict body
+      +dict params
+      +dict query
+      +dict headers
+    }
+
+    NestController -[hidden]> HttpTransport
+    NestRoute -> NestController
+    NestRequest -> NestRoute
   }
 
   package "Socket.io" {
@@ -113,6 +138,9 @@
       HttpTransport instead.
 
       +WsTransport(port)
+      +void setupTransport(self, appContext, 
+      moduleContext)
+      +void listen(pool)
     }
 
     class WebSocketGateway extends NestProvider {
@@ -121,6 +149,7 @@
       and NestModuleContext.addTransport.
 
       +WebSocketGateway(port)
+      +void listen(pool)
     }
   }
 
