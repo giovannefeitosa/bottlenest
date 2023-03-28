@@ -4,8 +4,7 @@ from .service import AppService
 
 @Controller()
 class AppController:
-    def __init__(self, context):
-        self.appService = context.inject(AppService)
+    appService: AppService
 
     @Get('/')
     def getHello(self, req):

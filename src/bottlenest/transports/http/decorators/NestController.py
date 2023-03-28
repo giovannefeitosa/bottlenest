@@ -24,13 +24,6 @@ class NestController(NestProvider):
             if type(getattr(provider, key)).__name__ == 'NestRoute':
                 yield getattr(provider, key)
 
-    def _getEventNames(self):
-        eventClassName = self.eventName()
-        eventNames = dir(self.classInstance)
-        eventNames = [name for name in eventNames if type(
-            getattr(self.classInstance, name)).__name__ == eventClassName]
-        return eventNames
-
     def listen(self, pool):
         print(f"NestController listen")
         flaskApp = self.moduleContext.getDefaultHttpTransport().getFlaskApp()

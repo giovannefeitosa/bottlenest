@@ -18,6 +18,10 @@ class NestModule:
         # ? should I?
         # moduleContext is exposed
         # because of NestApplicationContext.listen
+        # TODO: Inject providers into moduleContext
+        # each Provider should register itself in moduleContext
+        # using e.g.:
+        # moduleContext.registerProvider(self)
         self.moduleContext = NestModuleContext(appContext)
         for importedModule in imports:
             self._modules.push(importedModule(appContext))

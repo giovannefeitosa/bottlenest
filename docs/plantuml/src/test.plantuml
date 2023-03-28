@@ -79,6 +79,7 @@
       +void ____set(key, value)
       +HttpTransport getDefaultHttpTransport()
       +NestTransport getOrCreateTransport(transport)
+      +void registerProvider(provider)
     }
 
     NestTransport -[#afa]> NestFactory

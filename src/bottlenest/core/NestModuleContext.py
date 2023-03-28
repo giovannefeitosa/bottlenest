@@ -15,6 +15,10 @@ class NestModuleContext:
         print("NestModuleContext set", key, value)
         self.container[key] = value
 
+    def registerProvider(self, provider):
+        print("NestModuleContext registerProvider", provider.__name__)
+        self.container[provider.__name__] = provider
+
     def getOrCreateTransport(self, transport):
         try:
             transport = self.appContext.getTransport(transport)
