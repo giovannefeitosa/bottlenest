@@ -5,7 +5,7 @@ from bottlenest.common import Controller, Get
 class AppController:
     @Get('/')
     def getHello(self, req):
-        return self.appService.getHello()
+        return "Hello from dummy example!"
 
     @Get('/hello/:name')
     def getHello2(self, req):

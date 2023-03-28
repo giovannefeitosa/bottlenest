@@ -6,27 +6,22 @@ class NestRoute:
     __name__ = 'NestRoute'
 
     def __init__(self, path, method, callback):
-        print(f"route defined {method} {path}")
-        self.callback = callback
-        self.path = self._nestjsToFlaskPath(path)
+        self.path = path
         self.method = method
+        self.callback = callback
 
-    def setupEvent(self, cls, moduleContext):
-        print(f"NestRoute setupEvent {self.path}")
-        print(moduleContext)
-        transport = moduleContext.get('transport')
-        app = transport.app
-        # app = moduleContext.get('app')
-        app.add_url_rule(
-            self.path,
+    def setupRoute(self, provider, flaskApp):
+        print(f"[NestRoute] setupRoute {self.method} {self.path}")
+        flaskApp.add_url_rule(
+            self._nestjsToFlaskPath(self.path),
             methods=[self.method],
-            view_func=self._callbackWrapper(cls),
+            view_func=self._callbackWrapper(provider, self.callback),
         )
 
-    def _callbackWrapper(self, cls):
-        @wraps(self.callback)
+    def _callbackWrapper(self, provider, callback):
+        @wraps(callback)
         def wrapped(*args, **kwargs):
-            return self.callback(cls, NestRequest(request))
+            return callback(provider, NestRequest(request))
             # return self.callback(context)
         return wrapped
 

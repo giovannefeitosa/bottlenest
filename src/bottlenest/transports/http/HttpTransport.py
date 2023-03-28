@@ -11,6 +11,9 @@ class HttpTransport(NestTransport):
         self.port = port
         self.app = None
 
+    def getFlaskApp(self):
+        return self.app
+
     def getTransportKey(self):
         return 'HttpTransport', f"{self.port}"
 
@@ -22,7 +25,9 @@ class HttpTransport(NestTransport):
         self.appContext = appContext
         self.moduleContext = moduleContext
         self.logger = self.moduleContext.get('logger')
-        self.app = Flask(self.appContext.module.moduleName)
+        appName = f"http-{self.port}"
+        print(f"Starting http server on port {self.port}")
+        self.app = Flask(appName)
         # self.appContext.set('app', self.app)
         # if isinstance(self.moduleContext.get('transport'), HttpTransport):
         #     print("---------------------> setting up error handlers")
@@ -41,7 +46,7 @@ class HttpTransport(NestTransport):
 
     # start listening for requests
     # this is called
-    def listen(self, pool, callback):
+    def listen(self, pool):
         print(f"HttpTransport listen port={self.port}")
         # self.app.run(port=self.port, debug=False)
         # spawned = pool.spawn(self.app.run, port=self.port, debug=False)
@@ -49,5 +54,4 @@ class HttpTransport(NestTransport):
         def _startHttpServer(port, app):
             wsgi.server(eventlet.listen(('0.0.0.0', port)), app)
         pool.spawn(_startHttpServer, self.port, self.app)
-        callback()
         # return self.app.run(port=self.port, debug=False)

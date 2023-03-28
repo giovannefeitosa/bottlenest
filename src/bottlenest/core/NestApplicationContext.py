@@ -1,3 +1,4 @@
+import eventlet
 from bottlenest.core.NestTransport import NestTransport
 from bottlenest.transports.http.HttpTransport import HttpTransport
 
@@ -19,6 +20,7 @@ class NestApplicationContext:
             NestApplicationContext.transports[group] = {}
         NestApplicationContext.transports[group][key] = transport
         # add to _defaultHttpTransport if needed
+        print(f"NestApplicationContext.addTransport {group} {key}")
         if NestApplicationContext._defaultHttpTransport is None and group == 'HttpTransport':
             NestApplicationContext._defaultHttpTransport = transport
 
@@ -39,6 +41,24 @@ class NestApplicationContext:
 
     def listen(self):
         print(NestApplicationContext.transports)
-        # TODO: listen method
+        # setup the transports
+        for group in NestApplicationContext.transports.values():
+            for transport in group.values():
+                transport.setupTransport(self, self.module.moduleContext)
         # create the pool
-        # [transport.listen() for transport in NestApplicationContext.transports]
+        # poolQtt = len(WebsocketsFactory.__gateways__.values()) + 1
+        # pool = eventlet.GreenPool(poolQtt)
+        pool = eventlet.GreenPool()
+        # listen to transports
+        for group in NestApplicationContext.transports.values():
+            for transport in group.values():
+                transport.listen(pool)
+        # listen to module (and providers)
+        self.module.listen(pool)
+        # wait for all
+        try:
+            print("NestApplicationContext running...")
+            pool.waitall()
+        except KeyboardInterrupt:
+            print("NestApplicationContext keyboard interrupt")
+            # ? pool.kill()

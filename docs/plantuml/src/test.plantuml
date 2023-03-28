@@ -21,6 +21,7 @@
       manage the instances manually.
       
       +NestProvider(providerClass, moduleContext)
+      +void listen(pool)
     }
   }
 
@@ -53,10 +54,13 @@
     class NestModule {
       It's a way to import providers and other modules
 
+      +NestModuleContext moduleContext
+
       +NestModule(moduleClass, \
       imports, controllers, 
       providers, \
       appContext, transport=None)
+      +void listen(pool)
       ---
       When a module gets loaded:
       step 1: create the NestModuleContext
@@ -90,6 +94,7 @@
       Default transport.
 
       +HttpTransport(port)
+      +Flask getFlaskApp()
     }
 
     class NestController extends NestProvider {

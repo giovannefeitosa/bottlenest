@@ -12,12 +12,22 @@ class NestModule:
         # from NestApplicationContext
         appContext,
     ):
+        self._modules = []
+        self._providers = []
         # ? I'm not creating an instance of moduleClass here
         # ? should I?
-        moduleContext = NestModuleContext(appContext)
+        # moduleContext is exposed
+        # because of NestApplicationContext.listen
+        self.moduleContext = NestModuleContext(appContext)
         for importedModule in imports:
-            importedModule(appContext)
+            self._modules.push(importedModule(appContext))
         for provider in providers:
-            provider(moduleContext)
+            self._providers.append(provider(self.moduleContext))
         for controller in controllers:
-            controller(moduleContext)
+            self._providers.append(controller(self.moduleContext))
+
+    def listen(self, pool):
+        for module in self._modules:
+            module.listen(pool)
+        for provider in self._providers:
+            provider.listen(pool)

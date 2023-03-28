@@ -33,12 +33,11 @@ def Get(path):
     print(f"get defined {path}")
 
     def wrapper(func):
-        def inner(TODO):
-            return NestRoute(
-                callback=func,
-                path=path,
-                method='GET',
-            )
+        return NestRoute(
+            path=path,
+            method='GET',
+            callback=func,
+        )
     return wrapper
 
 
