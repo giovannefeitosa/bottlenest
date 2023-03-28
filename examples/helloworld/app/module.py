@@ -1,7 +1,6 @@
 from bottlenest.common import Module
-# from ..users.module import UsersModule
-from ..app.controller import AppController
-from ..app.service import AppService
+from .controller import AppController
+from .service import AppService
 
 
 @Module(

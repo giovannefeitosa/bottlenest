@@ -30,8 +30,6 @@ def Controller():
 
 
 def Get(path):
-    print(f"get defined {path}")
-
     def wrapper(func):
         return NestRoute(
             path=path,
@@ -42,52 +40,40 @@ def Get(path):
 
 
 def Post(path):
-    print(f"post defined {path}")
-
     def wrapper(func):
-        def inner(TODO):
-            return NestRoute(
-                callback=func,
-                path=path,
-                method='POST',
-            )
+        return NestRoute(
+            path=path,
+            method='POST',
+            callback=func,
+        )
     return wrapper
 
 
 def Put(path):
-    print(f"put defined {path}")
-
     def wrapper(func):
-        def inner(TODO):
-            return NestRoute(
-                callback=func,
-                path=path,
-                method='PUT',
-            )
+        return NestRoute(
+            path=path,
+            method='PUT',
+            callback=func,
+        )
     return wrapper
 
 
 def Delete(path):
-    print(f"delete defined {path}")
-
     def wrapper(func):
-        def inner(TODO):
-            return NestRoute(
-                callback=func,
-                path=path,
-                method='DELETE',
-            )
+        return NestRoute(
+            path=path,
+            method='DELETE',
+            callback=func,
+        )
     return wrapper
 
 
 def Patch(path):
-    print(f"patch defined {path}")
-
     def wrapper(func):
-        def inner(TODO):
-            return NestRoute(
-                callback=func,
-                path=path,
-                method='PATCH',
-            )
+        return NestRoute(
+            path=path,
+            method='PATCH',
+            callback=func,
+        )
     return wrapper

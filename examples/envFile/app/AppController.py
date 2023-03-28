@@ -4,9 +4,7 @@ from bottlenest.config import ConfigService
 
 @Controller()
 class AppController:
-    # TODO: remove the need of an empty constructor
-    def __init__(self, context):
-        self.configService = context.inject(ConfigService)
+    configService: ConfigService
 
     @Get('/')
     def getHello(self, req):

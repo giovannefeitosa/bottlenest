@@ -9,9 +9,14 @@ import os
     providers=[ConfigService],
 )
 class ConfigModule:
-    @staticmethod
-    def forRoot(envFilePath='.env'):
-        # load .env file and add to environment
-        # to load a .env file we will use the dotenv package
-        load_dotenv(envFilePath)
-        return ConfigModule
+    pass
+
+
+def forRoot(envFilePath='.env'):
+    # load .env file and add to environment
+    # to load a .env file we will use the dotenv package
+    load_dotenv(envFilePath)
+    return ConfigModule
+
+
+ConfigModule.forRoot = staticmethod(forRoot)

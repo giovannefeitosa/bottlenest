@@ -3,21 +3,25 @@ from ..metaClasses.NestProvider import NestProvider
 
 def Injectable():
     def wrapper(originalClass):
-        return NestInjectable(
-            originalClass=originalClass,
-        )
+        def inner(moduleContext):
+            return NestInjectable(
+                originalClass=originalClass,
+                moduleContext=moduleContext,
+            )
+        return inner
     return wrapper
 
 
 class NestInjectable(NestProvider):
     __name__ = 'NestInjectable'
 
-    def __init__(self, originalClass):
-        # self.__name__ = originalClass.__name__
+    def __init__(self, originalClass, moduleContext):
         self.cls = originalClass
         self.providerName = originalClass.__name__
         self.originalClass = originalClass
-        self.classInstance = None
+        # self.classInstance = None
+        # TODO: moduleContext should be optional here
+        self.classInstance = self.originalClass(moduleContext)
         # self.dependencies = []
 
     def getName(self):

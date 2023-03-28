@@ -24,11 +24,18 @@ class NestModule:
         # moduleContext.registerProvider(self)
         self.moduleContext = NestModuleContext(appContext)
         for importedModule in imports:
-            self._modules.push(importedModule(appContext))
+            self._modules.append(importedModule(appContext))
         for provider in providers:
-            self._providers.append(provider(self.moduleContext))
+            providerInstance = provider(self.moduleContext)
+            # TODO: is this assert correct?
+            assert str(type(providerInstance)).find('NestInjectable') > -1, \
+                f"Provider {type(providerInstance)} is not NestInjectable"
+            self._providers.append(providerInstance)
+            self.moduleContext.registerProvider(providerInstance)
         for controller in controllers:
-            self._providers.append(controller(self.moduleContext))
+            providerInstance = controller(self.moduleContext)
+            self._providers.append(providerInstance)
+            self.moduleContext.registerProvider(providerInstance)
 
     def listen(self, pool):
         for module in self._modules:

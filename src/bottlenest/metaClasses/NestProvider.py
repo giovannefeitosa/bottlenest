@@ -60,5 +60,5 @@ class NestProvider(ABC):
             event = getattr(self.classInstance, eventName)
             event.setupEvent(self.classInstance, moduleContext)
 
-    def listen(self):
+    def listen(self, pool):
         pass

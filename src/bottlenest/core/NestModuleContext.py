@@ -18,6 +18,19 @@ class NestModuleContext:
     def registerProvider(self, provider):
         print("NestModuleContext registerProvider", provider.__name__)
         self.container[provider.__name__] = provider
+        self._populateProvider(provider)
+
+    def _populateProvider(self, provider):
+        if 'classInstance' not in provider.__dict__:
+            for annotation in provider.provider.__annotations__:
+                # TODO: add providerInstance to container
+                providerInstance = provider.provider.__annotations__[
+                    annotation](self)
+                setattr(provider.provider, annotation,
+                        providerInstance.classInstance)
+        # if 'classInstance' in injectable.__dict__:
+        #     props = vars(injectable.cls)
+        #     print(f"===-----------------> props: {props}")
 
     def getOrCreateTransport(self, transport):
         try:
