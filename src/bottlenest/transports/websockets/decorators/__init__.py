@@ -8,11 +8,14 @@ from bottlenest.transports.websockets.decorators.NestSubscribeMessage import Nes
 
 def WebSocketGateway(port=80, namespace=None):
     def wrapper(gatewayClass):
-        return NestWebSocketGateway(
-            cls=gatewayClass,
-            port=port,
-            namespace=namespace,
-        )
+        def inner(moduleContext):
+            return NestWebSocketGateway(
+                gatewayClass=gatewayClass,
+                port=port,
+                namespace=namespace,
+                moduleContext=moduleContext,
+            )
+        return inner
     return wrapper
 
 

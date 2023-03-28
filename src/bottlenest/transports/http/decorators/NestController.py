@@ -11,6 +11,7 @@ class NestController(NestProvider):
         print(f"NestController init")
         self.moduleContext = moduleContext
         # TODO: I should pass moduleContext here (conditionally)
+        self.providerClass = providerClass
         self.provider = providerClass()
         # moduleContext.getOrCreateProvider(self.__name__, self)
         # transport = moduleContext.getOrCreateTransport(self.transport)

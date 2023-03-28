@@ -24,7 +24,7 @@ class HttpTransport(NestTransport):
         print("HttpTransport setupTransport")
         self.appContext = appContext
         self.moduleContext = moduleContext
-        self.logger = self.moduleContext.get('logger')
+        # self.logger = self.moduleContext.get('logger')
         appName = f"http-{self.port}"
         print(f"Starting http server on port {self.port}")
         self.app = Flask(appName)
@@ -37,7 +37,7 @@ class HttpTransport(NestTransport):
     def setupErrorHandlers(self):
         @self.app.errorhandler(Exception)
         def defaultErrorHandler(e):
-            self.logger.log(
+            print(
                 'NestApplicationContext handle_exception', e, traceback.format_exc())
             # check if e is an instance of HttpError
             if isinstance(e, HttpError):

@@ -19,9 +19,11 @@ class NestInjectable(NestProvider):
         self.cls = originalClass
         self.providerName = originalClass.__name__
         self.originalClass = originalClass
+        self.providerClass = originalClass
         # self.classInstance = None
         # TODO: moduleContext should be optional here
         self.classInstance = self.originalClass(moduleContext)
+        self.provider = self.classInstance
         # self.dependencies = []
 
     def getName(self):

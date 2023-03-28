@@ -1,4 +1,5 @@
 from bottlenest.core.NestModuleContext import NestModuleContext
+from bottlenest.core.NestProvider import NestProvider
 
 
 class NestModule:
@@ -28,8 +29,8 @@ class NestModule:
         for provider in providers:
             providerInstance = provider(self.moduleContext)
             # TODO: is this assert correct?
-            assert str(type(providerInstance)).find('NestInjectable') > -1, \
-                f"Provider {type(providerInstance)} is not NestInjectable"
+            # assert str(type(providerInstance)).find('NestInjectable') > -1, \
+            #     f"Provider {type(providerInstance)} is not NestInjectable"
             self._providers.append(providerInstance)
             self.moduleContext.registerProvider(providerInstance)
         for controller in controllers:
