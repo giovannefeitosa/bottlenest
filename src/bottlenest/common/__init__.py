@@ -1,4 +1,4 @@
-from bottlenest.transports.http.decorators import Module, Controller, Get
+from bottlenest.transports.http.decorators import Module, Controller, Get, Post, Put, Delete, Patch
 from bottlenest.common.Injectable import *
 
 # auto import from http

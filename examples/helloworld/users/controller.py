@@ -4,8 +4,7 @@ from .service import UsersService
 
 @Controller()
 class UsersController:
-    def __init__(self, context):
-        self.usersService = context.inject(UsersService)
+    usersService: UsersService
 
     @Get('/users')
     def getUsers(self, req):
