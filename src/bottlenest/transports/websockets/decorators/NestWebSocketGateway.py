@@ -1,8 +1,6 @@
 import eventlet
 import socketio
 from bottlenest.core.NestProvider import NestProvider
-from .NestSubscribeMessage import NestSubscribeMessage
-from ..factories.WebsocketsFactory import WebsocketsFactory
 
 servers = []
 
@@ -11,21 +9,20 @@ class NestWebSocketGateway(NestProvider):
     __name__ = 'NestWebSocketGateway'
 
     def __init__(self, gatewayClass, moduleContext, port=4001, namespace=None):
-        self.moduleContext = moduleContext
-        self.gatewayClass = gatewayClass
-        self.providerName = gatewayClass.__name__
         self.port = port
         self.namespace = namespace
         self.providerClass = gatewayClass
+        self.providerName = gatewayClass.__name__
+        self.moduleContext = moduleContext
         # TODO: send moduleContext to gatewayClass(moduleContext)
         # conditionally
         try:
-            self.provider = gatewayClass()
+            self.provider = self.providerClass()
         except TypeError:
-            self.provider = gatewayClass(moduleContext)
+            self.provider = self.providerClass(moduleContext)
 
     # def getName(self):
-    #     return self.gatewayClass.__name__
+    #     return self.providerClass.__name__
 
     # def eventName(self):
     #     return NestSubscribeMessage.__name__

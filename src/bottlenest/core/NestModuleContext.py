@@ -8,28 +8,25 @@ class NestModuleContext:
         self.container = {}
 
     def get(self, key, defaultValue=None):
-        print("NestModuleContext get", key)
+        # print("NestModuleContext get", key)
         return self.container[key] if key in self.container else defaultValue
 
     def set(self, key, value):
-        print("NestModuleContext set", key, value)
+        # print("NestModuleContext set", key, value)
         self.container[key] = value
 
     def registerProvider(self, provider):
-        print("NestModuleContext registerProvider", provider.__name__)
+        # print("NestModuleContext registerProvider", provider.__name__)
         self.container[provider.__name__] = provider
         self._populateProvider(provider)
 
     def _populateProvider(self, provider):
         for annotation in provider.providerClass.__annotations__:
-            # TODO: add providerInstance to container
+            # TODO: add providerInstance to ??
             providerInstance = provider.providerClass.__annotations__[
                 annotation](self)
             setattr(provider.provider, annotation,
                     providerInstance.classInstance)
-        # if 'classInstance' in injectable.__dict__:
-        #     props = vars(injectable.cls)
-        #     print(f"===-----------------> props: {props}")
 
     def getOrCreateTransport(self, transport):
         try:
@@ -40,14 +37,3 @@ class NestModuleContext:
 
     def getDefaultHttpTransport(self) -> HttpTransport:
         return self.appContext.getDefaultHttpTransport()
-
-    # TODO: is this inject method needed?
-    # def inject(self, injectable):
-    #     moduleName = self.container['module'].name
-    #     providerName = injectable.__name__
-    #     key = f"{moduleName}.{providerName}"
-    #     provider = self.container[key] if key in self.container else None
-    #     if provider:
-    #         return provider.instance
-    #     else:
-    #         raise Exception(f"Provider not found: {key}")

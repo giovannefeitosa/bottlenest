@@ -14,7 +14,7 @@ class TrainCommand:
 
     def run(self, context, args):
         data = args.data
-        print(f"{self.__name__}.run:")
+        print(f"TrainCommand.run:")
         print(f"  data: {data}")
         print(args)
         # ---

@@ -40,7 +40,7 @@ class NestApplicationContext:
         return NestApplicationContext._defaultHttpTransport
 
     def listen(self):
-        print(NestApplicationContext.transports)
+        # print(NestApplicationContext.transports)
         # setup the transports
         for group in NestApplicationContext.transports.values():
             for transport in group.values():

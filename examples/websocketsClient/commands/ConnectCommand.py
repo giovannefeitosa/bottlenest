@@ -11,11 +11,8 @@ sio = socketio.Client()
     description="Connects to a websocket server",
 )
 class ConnectCommand:
-    def __init__(self, context):
-        self.context = context
-
-    def run(self, context, args):
-        print(f"{self.__name__}.run: ", args.serverUrl)
+    def run(self, inquirer, args):
+        print(f"ConnectCommand.run: ", args.port)
         # ------------------------------
         # connect to socketio server
         # on connect
@@ -33,12 +30,11 @@ class ConnectCommand:
         @sio.event
         def message(data):
             print("I received a message: ", data)
-        sio.connect(args.serverUrl)
+        sio.connect(f"http://localhost:{args.port}")
         # ------------------------------
 
         # ------------------------------
         # Use inquirer to ask for input message
-        inquirer = context.get('inquirer')
         question = inquirer.Text('message', message="Enter a message")
         while True:
             answer = inquirer.prompt([question])
@@ -72,10 +68,9 @@ class ConnectCommand:
         # ---
 
     @CommandArgument(
-        name="--url, -u",
-        dest="serverUrl",
+        name="port",
+        # dest="port",
         type=str,
-        default="http://localhost:8013"
     )
-    def serverUrlArg(self, value):
+    def portArg(self, value):
         return value

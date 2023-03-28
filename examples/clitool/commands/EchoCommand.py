@@ -11,7 +11,7 @@ class EchoCommand:
         self.context = context
 
     def run(self, context, args):
-        print(f"{self.__name__}.run: ", args.command, args.messageArg)
+        print(f"EchoCommand.run: ", args.messageArg)
         print(args)
         # ---
         # Example from official docs

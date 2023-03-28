@@ -3,18 +3,21 @@ from bottlenest.transports.cli.decorators.NestCommandArgument import NestCommand
 
 
 def Command(name, *args, **kwargs):
-    def decorator(cls):
-        return NestCommand(
-            cls=cls,
-            commandName=name,
-            *args,
-            **kwargs,
-        )
-    return decorator
+    def wrapper(commandClass):
+        def inner(moduleContext):
+            return NestCommand(
+                commandClass=commandClass,
+                commandName=name,
+                moduleContext=moduleContext,
+                *args,
+                **kwargs,
+            )
+        return inner
+    return wrapper
 
 
 def CommandArgument(name, optional=None, *args, **kwargs):
-    def decorator(callback):
+    def wrapper(callback):
         return NestCommandArgument(
             callback=callback,
             argumentName=name,
@@ -22,4 +25,4 @@ def CommandArgument(name, optional=None, *args, **kwargs):
             *args,
             **kwargs,
         )
-    return decorator
+    return wrapper

@@ -1,7 +1,7 @@
-from bottlenest.common import Module
-from bottlenest.transports.cli import CommandFactory
-from examples.clitool.commands.EchoCommand import EchoCommand
-from examples.clitool.commands.TrainCommand import TrainCommand
+from bottlenest import NestFactory, Module
+from bottlenest.transports.cli import CliTransport
+from .commands.EchoCommand import EchoCommand
+from .commands.TrainCommand import TrainCommand
 
 
 @Module(
@@ -12,7 +12,12 @@ class AppModule:
 
 
 def main():
-    CommandFactory.run(AppModule)
+    app = NestFactory.createMicroservice(
+        AppModule,
+        transport=CliTransport(),
+    )
+
+    app.listen()
 
 
 if __name__ == '__main__':
