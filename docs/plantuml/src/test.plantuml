@@ -82,6 +82,11 @@
       +void registerProvider(provider)
     }
 
+    class NestMethodDecorator {
+      +Callable callback
+      +void setupMethodDecorator(provider, transportApp)
+    }
+
     NestTransport -[#afa]> NestFactory
     NestFactory <-[#afa] NestModule
     NestFactory -[#afa]> NestApplicationContext
@@ -110,11 +115,11 @@
       +void listen(pool)
     }
 
-    class NestRoute {
+    class NestRoute extends NestMethodDecorator {
       Create a route.
 
       +NestRoute(path, method, callback)
-      +void setupRoute(provider, flaskApp)
+      +void setupMethodDecorator(provider, flaskApp)
       +void listen(pool)
     }
 

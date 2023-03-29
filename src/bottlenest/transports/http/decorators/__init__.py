@@ -2,6 +2,7 @@
 from bottlenest.core.NestModule import NestModule
 from .NestController import NestController
 from .NestRoute import NestRoute
+from .NestBody import NestBody
 
 
 def Module(controllers=[], providers=[], imports=[]):
@@ -26,6 +27,15 @@ def Controller():
                 moduleContext,
             )
         return inner
+    return wrapper
+
+
+def Body(dto):
+    def wrapper(callback):
+        return NestBody(
+            callback=callback,
+            dto=dto,
+        )
     return wrapper
 
 

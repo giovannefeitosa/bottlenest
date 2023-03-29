@@ -82,6 +82,7 @@ example-envFile = "examples.envFile.main:main"
 example-helloworld = "examples.helloworld.main:main"
 example-websocketsClient = "examples.websocketsClient.main:main"
 example-websocketsServer = "examples.websocketsServer.main:main"
+example-dtos = "examples.dtos.main:main"
 
 
 

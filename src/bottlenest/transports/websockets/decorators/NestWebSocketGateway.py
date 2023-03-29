@@ -33,7 +33,7 @@ class NestWebSocketGateway(NestProvider):
             print("starting websockets server")
             sio = socketio.Server()
             for event in self._getEvents(self.provider):
-                event.setupEvent(self.provider, sio)
+                event.setupMethodDecorator(self.provider, sio)
             app = socketio.WSGIApp(sio)
             eventlet.wsgi.server(eventlet.listen(('', self.port)), app)
         pool.spawn(_startWebsocketsServer)

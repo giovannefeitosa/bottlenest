@@ -29,6 +29,6 @@ class NestController(NestProvider):
         print(f"NestController listen")
         flaskApp = self.moduleContext.getDefaultHttpTransport().getFlaskApp()
         for route in self._getRoutes(self.provider):
-            route.setupRoute(self.provider, flaskApp)
+            route.setupMethodDecorator(self.provider, flaskApp)
         # transport = self.moduleContext.getOrCreateTransport(self.transport)
         # transport.listen(pool, self.callback)

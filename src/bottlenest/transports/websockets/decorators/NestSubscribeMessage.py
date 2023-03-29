@@ -1,4 +1,7 @@
-class NestSubscribeMessage:
+from bottlenest.core.NestMethodDecorator import NestMethodDecorator
+
+
+class NestSubscribeMessage(NestMethodDecorator):
     __name__ = 'NestSubscribeMessage'
 
     def __init__(self, callback, eventName):
@@ -6,7 +9,7 @@ class NestSubscribeMessage:
         self.callback = callback
 
     # called from whithin NestWebsocketGateway._setupProvider()
-    def setupEvent(self, cls, sio):
+    def setupMethodDecorator(self, cls, sio):
         print(f"setup event {self.eventName}")
 
         @sio.on(self.eventName)

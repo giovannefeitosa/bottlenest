@@ -1,8 +1,9 @@
 from flask import request
 from functools import wraps
+from bottlenest.core.NestMethodDecorator import NestMethodDecorator
 
 
-class NestRoute:
+class NestRoute(NestMethodDecorator):
     __name__ = 'NestRoute'
 
     def __init__(self, path, method, callback):
@@ -10,8 +11,8 @@ class NestRoute:
         self.method = method
         self.callback = callback
 
-    def setupRoute(self, provider, flaskApp):
-        print(f"[NestRoute] setupRoute {self.method} {self.path}")
+    def setupMethodDecorator(self, provider, flaskApp):
+        print(f"[NestRoute] setupMethodDecorator {self.method} {self.path}")
         flaskApp.add_url_rule(
             self._nestjsToFlaskPath(self.path),
             methods=[self.method],

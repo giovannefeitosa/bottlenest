@@ -1,5 +1,4 @@
 from bottlenest.core.NestModuleContext import NestModuleContext
-from bottlenest.core.NestProvider import NestProvider
 
 
 class NestModule:

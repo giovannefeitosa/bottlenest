@@ -1,4 +1,4 @@
-from ..metaClasses.NestProvider import NestProvider
+from bottlenest.core.NestProvider import NestProvider
 
 
 def Injectable():
@@ -16,7 +16,6 @@ class NestInjectable(NestProvider):
     __name__ = 'NestInjectable'
 
     def __init__(self, originalClass, moduleContext):
-        self.cls = originalClass
         self.providerName = originalClass.__name__
         self.originalClass = originalClass
         self.providerClass = originalClass
@@ -51,3 +50,6 @@ class NestInjectable(NestProvider):
 
     def __str__(self):
         return f"{self.providerName}()"
+
+    def listen(self, pool):
+        pass

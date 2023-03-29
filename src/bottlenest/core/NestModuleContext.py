@@ -1,5 +1,6 @@
 # from bottlenest.core.NestTransport import NestTransport
-from bottlenest.transports.http.HttpTransport import HttpTransport
+from bottlenest.core.NestProvider import NestProvider
+from pprint import pprint
 
 
 class NestModuleContext:
@@ -21,6 +22,8 @@ class NestModuleContext:
         self._populateProvider(provider)
 
     def _populateProvider(self, provider):
+        assert issubclass(type(
+            provider), NestProvider), f"Provider {provider} must be a subclass of NestProvider"
         for annotation in provider.providerClass.__annotations__:
             # TODO: add providerInstance to ??
             providerInstance = provider.providerClass.__annotations__[
@@ -35,5 +38,5 @@ class NestModuleContext:
             self.appContext.addTransport(transport)
         return transport
 
-    def getDefaultHttpTransport(self) -> HttpTransport:
+    def getDefaultHttpTransport(self):
         return self.appContext.getDefaultHttpTransport()
