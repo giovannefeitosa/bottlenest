@@ -4,6 +4,7 @@ import traceback
 import eventlet
 from eventlet import wsgi
 from bottlenest.core.NestTransport import NestTransport
+from pydantic.error_wrappers import ValidationError
 
 
 class HttpTransport(NestTransport):
@@ -28,6 +29,7 @@ class HttpTransport(NestTransport):
         appName = f"http-{self.port}"
         print(f"Starting http server on port {self.port}")
         self.app = Flask(appName)
+        self.setupErrorHandlers()
         # self.appContext.set('app', self.app)
         # if isinstance(self.moduleContext.get('transport'), HttpTransport):
         #     print("---------------------> setting up error handlers")
@@ -42,6 +44,8 @@ class HttpTransport(NestTransport):
             # check if e is an instance of HttpError
             if isinstance(e, HttpError):
                 return e.toDict(), e.statusCode
+            if isinstance(e, ValidationError):
+                return {"messages": e.errors()}, 400
             return {"messages": [e.__str__()]}, 500
 
     # start listening for requests

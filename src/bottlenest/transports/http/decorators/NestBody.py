@@ -8,6 +8,5 @@ class NestBody(NestMethodDecorator):
         self.callback = callback
         self.dto = dto
 
-    def setupMethodDecorator(self, moduleContext, dto):
-        print("[NestBody] setupMethodDecorator", moduleContext, dto)
-        self.callback(moduleContext, {})
+    def setupMethodDecorator(self, moduleContext, request):
+        self.callback(moduleContext, request)

@@ -11,18 +11,20 @@ class NestRoute(NestMethodDecorator):
         self.method = method
         self.callback = callback
 
-    def setupMethodDecorator(self, provider, flaskApp):
+    def setupMethodDecorator(self, provider, request):
         print(f"[NestRoute] setupMethodDecorator {self.method} {self.path}")
-        flaskApp.add_url_rule(
+        request.flaskApp.add_url_rule(
             self._nestjsToFlaskPath(self.path),
             methods=[self.method],
-            view_func=self._callbackWrapper(provider, self.callback),
+            view_func=self._callbackWrapper(provider, self.callback, request),
         )
 
-    def _callbackWrapper(self, provider, callback):
+    def _callbackWrapper(self, provider, callback, request):
         @wraps(callback)
         def wrapped(*args, **kwargs):
-            return callback(provider, NestRequest(request))
+            if issubclass(type(callback), NestMethodDecorator):
+                return callback.setupMethodDecorator(provider, request)
+            return callback(provider, request)
             # return self.callback(context)
         return wrapped
 
@@ -36,34 +38,3 @@ class NestRoute(NestMethodDecorator):
             else:
                 result += '/' + part
         return result[1:]
-
-##################################################################
-
-
-class NestRequest:
-    __name__ = 'NestRequest'
-
-    def __init__(self, request):
-        self.request = request
-        self.params = NestRequestParams(self.request)
-        self.query = {}
-        self.body = request.get_json(silent=True, force=True)
-        self.headers = {}
-
-        if self.body is None:
-            self.body = {}
-
-
-class NestRequestParams(object):
-    __name__ = 'NestRequestParams'
-
-    def __init__(self, request):
-        super(NestRequestParams, self).__init__()
-        self.request = request
-
-    def __getattribute__(self, __name: str):
-        if __name == 'request':
-            return super(NestRequestParams, self).__getattribute__(__name)
-        else:
-            return self.request.view_args[__name]
-            # return self.request.args.get(__name, type=str)
