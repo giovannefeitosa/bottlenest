@@ -9,9 +9,7 @@ class AppController:
         return "Make a post for this url!"
 
     @Post('/')
+    @Body(CatDto)
     def getHello2(self, req):
-        cat = CatDto(req.body)
-        return {
-            'name': cat.name,
-            'age': cat.age,
-        }
+        # return CatDto(req.body)
+        return req.body

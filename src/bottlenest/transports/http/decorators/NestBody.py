@@ -1,4 +1,6 @@
 from bottlenest.core.NestMethodDecorator import NestMethodDecorator
+from pydantic.error_wrappers import ValidationError
+from bottlenest.transports.http.errors.BadRequestError import BadRequestError
 
 
 class NestBody(NestMethodDecorator):
@@ -9,4 +11,6 @@ class NestBody(NestMethodDecorator):
         self.dto = dto
 
     def setupMethodDecorator(self, moduleContext, request):
-        self.callback(moduleContext, request)
+        # pydantic validates automatically
+        self.dto(request.body)
+        return self.callback(moduleContext, request)

@@ -46,7 +46,7 @@ class HttpTransport(NestTransport):
                 return e.toDict(), e.statusCode
             if isinstance(e, ValidationError):
                 return {"messages": e.errors()}, 400
-            return {"messages": [e.__str__()]}, 500
+            return {"messages": [e.__str__()], "_stacktrace": traceback.format_exc()}, 500
 
     # start listening for requests
     # this is called

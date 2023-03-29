@@ -1,6 +1,7 @@
 from flask import request
 from functools import wraps
 from bottlenest.core.NestMethodDecorator import NestMethodDecorator
+import json
 
 
 class NestRoute(NestMethodDecorator):
@@ -22,9 +23,16 @@ class NestRoute(NestMethodDecorator):
     def _callbackWrapper(self, provider, callback, request):
         @wraps(callback)
         def wrapped(*args, **kwargs):
+            def _asJson(resp):
+                if hasattr(resp, '__fields__'):
+                    return resp.json()
+                return json.dumps(resp)
             if issubclass(type(callback), NestMethodDecorator):
-                return callback.setupMethodDecorator(provider, request)
-            return callback(provider, request)
+                try:
+                    return _asJson(callback.setupMethodDecorator(provider, request))
+                except Exception as e:
+                    raise e
+            return _asJson(callback(provider, request))
             # return self.callback(context)
         return wrapped
 
